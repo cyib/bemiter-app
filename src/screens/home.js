@@ -70,10 +70,6 @@ const HomeScreen = () => {
                     createdAt={new Date()}
                 />
                 <Post
-                    type={'text'}
-                    content={`"I believe we can keep the promise of our founders, the idea that if you're willing to work hard, it doesn't matter who you are or where you come from or what you look like or who you love. It doesn't matter whether you're black or white or Hispanic or Asian or Native American or young or old or rich or poor, able, disabled, gay or straight, you can make it here in America if you're willing to try." - Barack Obama`}
-                />
-                <Post
                     name={'Lucas Borges'}
                     subtitle={'Cuiabá'}
                     profileImage={'https://ipfs.io/ipfs/QmfTYg7mNSSuHqXyX3fvP9tFAYahWjqTrbLH7nBhUTsL5u'}
@@ -88,10 +84,6 @@ const HomeScreen = () => {
                     type={'video'}
                     src={"https://rr3---sn-bg0eznle.googlevideo.com/videoplayback?expire=1641281061&ei=xaHTYY7sGoOS-LAPn-CXwAg&ip=45.234.3.155&id=o-AOcHVBOpg7l-nNF-eYLp4CzhfpVBCBQ9jClOweoSmMzg&itag=22&source=youtube&requiressl=yes&vprv=1&mime=video%2Fmp4&ns=792eT1LZHfrQAn8X4SsVYnUG&cnr=14&ratebypass=yes&dur=829.486&lmt=1641170657888528&fexp=24001373,24007246&c=WEB&txp=5532434&n=7LAGtXjNZIgotA&sparams=expire%2Cei%2Cip%2Cid%2Citag%2Csource%2Crequiressl%2Cvprv%2Cmime%2Cns%2Ccnr%2Cratebypass%2Cdur%2Clmt&sig=AOq0QJ8wRAIga5QlQaaMayF3d_29qKuNeGyGgScyeAWj_tROobPw3GMCIGRCKOAjacWolNUyzXlO4nlhEzez2vA10n7161El423p&cm2rm=sn-b8u-jbce7s&req_id=7d04872aa208a3ee&redirect_counter=2&rm=sn-bg0rr7s&cms_redirect=yes&ipbypass=yes&mh=b1&mip=2804:4be4:8349:a001:601c:5390:66:51e&mm=29&mn=sn-bg0eznle&ms=rdu&mt=1641259255&mv=m&mvi=3&pl=36&lsparams=ipbypass,mh,mip,mm,mn,ms,mv,mvi,pl&lsig=AG3C_xAwRQIgQ7LnTt95ISfHxfsqugtzHpIKIJYcQAn77F3C8c4YFQsCIQDvTn7jLhaviZmxmYGjz6zY7OChn21ACstTlr9Jh4UtQQ%3D%3D"}
                     content={'Via infinda'}
-                />
-                <Post
-                    type={'text'}
-                    content="Hoje deu uma preguiça 🥱😴😴"
                 />
                 <View style={{
                     backgroundColor: globalVars.selectedColors.background,

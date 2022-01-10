@@ -18,6 +18,7 @@ import CreateScreen from "./screens/create";
 import CameraScreen from "./screens/camera";
 import SendFile from "./screens/sendfile";
 import EditorScreen from "./screens/editor";
+import ForumScreen from "./screens/forum";
 
 const FeedStackNavigator = createNativeStackNavigator();
 
@@ -95,6 +96,18 @@ function MyTabs() {
                         <MaterialCommunityIcons name="home" color={color} size={30} />
                     ),
                     headerShown: false,
+                }}
+            />
+            <Tab.Screen
+                name="ForumTab"
+                component={ForumScreen}
+                options={{
+                    tabBarShowLabel: false,
+                    tabBarInactiveTintColor: globalVars.currentTheme.colors.accent,
+                    headerShown: false,
+                    tabBarIcon: ({ color, size }) => (
+                        <MaterialCommunityIcons name="forum" color={color} size={30} />
+                    ),
                 }}
             />
             <Tab.Screen

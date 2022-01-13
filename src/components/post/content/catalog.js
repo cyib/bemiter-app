@@ -22,7 +22,7 @@ const ContentCatalog = (props) => {
         </Col>
         <Col size={6} >
           <Row style={{ justifyContent: 'center' }}>
-            <Text style={{ fontSize: 30, textAlign: 'center', justifyContent: 'center' }}>{props.title}</Text>
+            <Text style={{ fontSize: 28, textAlign: 'center', justifyContent: 'center' }}>{props.title}</Text>
           </Row>
           <Row style={{ justifyContent: 'center' }}>
             <Text style={{ fontSize: 12, textAlign: 'center', justifyContent: 'center' }}>{props.description}</Text>

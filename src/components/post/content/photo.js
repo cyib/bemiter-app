@@ -6,7 +6,7 @@ const ContentPhoto = (props) => {
   var [source, setSource] = useState(props.src ? props.src : `https://picsum.photos/800/600?random=${getRandomInt(1, 100)}`);
 
   return (
-    <View>
+    <View style={{ maxHeight: 500, zIndex: -1 }}>
       <Image
           style={{ height: 500, zIndex: -1 }}
           onLoadEnd={() => {

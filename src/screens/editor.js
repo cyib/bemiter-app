@@ -1,22 +1,35 @@
 import React, { useState } from "react";
-import { View, Image, TouchableOpacity, Dimensions, Text } from "react-native";
+import { View, Image, TouchableOpacity, Dimensions, Text, ScrollView } from "react-native";
 import { Video } from 'expo-av';
 import globalVars from "../helpers/globalVars";
 import { Row, Col } from "react-native-paper-grid";
+import uploadFile from '../helpers/uploadFile';
+import { TextInput } from "react-native-paper";
 
 const EditorScreen = (props) => {
     var [file, setFile] = useState(props.route.params.file);
-    console.log(props.route.params.file);
+    var [description, setDescription] = useState('');
 
     var maxWidth = Dimensions.get('screen').width;
     var maxHeight = Dimensions.get('screen').height;
 
     return (
-        <View style={{ height: maxHeight, backgroundColor: globalVars.selectedColors.background }}>
-            <View style={{}}>
+        <View style={{ minHeight: maxHeight, backgroundColor: globalVars.selectedColors.background }}>
+            <ScrollView style={{}}>
                 <Row>
                     <Col>
-                        <View style={{ backgroundColor: 'blue'}}>
+                        <TextInput placeholder="Escreva sua legenda aqui ..."
+                            onChangeText={(text) => setDescription(text)} maxLength={50}>
+
+                        </TextInput>
+                        <View>
+                            <Text>{description.length}/50</Text>
+                        </View>
+                    </Col>
+                </Row>
+                <Row>
+                    <Col>
+                        <View style={{ width: '100%', justifyContent: 'center' }}>
                             {file ?
                                 <>
                                     {file.type == 'image' ?
@@ -31,10 +44,23 @@ const EditorScreen = (props) => {
                 </Row>
                 <Row>
                     <Col>
-                        <Text>TESTE</Text>
+                        <TouchableOpacity onPress={() => { uploadFile(file) }}
+                            style={{
+                                backgroundColor: 'black',
+                                width: '100%',
+                                alignItems: 'center',
+                                padding: 15, borderRadius: 5
+                            }}>
+                            <Text style={{ fontSize: 20 }}>PUBLICAR</Text>
+                        </TouchableOpacity>
                     </Col>
                 </Row>
-            </View>
+                <Row>
+                    <Col>
+                        <View style={{ height: 175, width: '100%'}} />
+                    </Col>
+                </Row>
+            </ScrollView>
         </View>
     );
 }

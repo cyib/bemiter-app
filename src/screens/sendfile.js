@@ -16,9 +16,9 @@ export default function SendFile() {
         // No permissions request is necessary for launching the image library
         let result = await ImagePicker.launchImageLibraryAsync({
             mediaTypes: ImagePicker.MediaTypeOptions.All,
-            videoMaxDuration: 10,
+            videoMaxDuration: 600,
             allowsEditing: true,
-            aspect: [4, 3],
+            aspect: [1, 1],
             quality: 1,
         });
 

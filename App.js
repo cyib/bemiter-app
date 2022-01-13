@@ -7,6 +7,7 @@ import TopLoading from './src/components/extras/topLoading';
 import { getData } from './src/helpers/cache';
 import { setCustomText } from 'react-native-global-props';
 import MainStatusBar from './src/components/extras/statusBar';
+import LoginScreen from './src/screens/login';
 
 function themeConfig() {
   var theme_ = {
@@ -70,6 +71,7 @@ async function getUserInfo() {
 
 export default function App() {
   var [theme, setTheme] = useState(null);
+  var [isLogged, setIsLogged] = useState(false);
   var [loadingCache, setLoadingCache] = useState(true);
 
   useEffect(() => {
@@ -84,38 +86,41 @@ export default function App() {
           setTheme(themeConfig());
         })
       }
-        setLoadingCache(false);
+      setLoadingCache(false);
+    }).catch(e => {
+      globalVars.theme.mode = 'default';
+      setTheme(themeConfig());
     });
+
+    getLoginFromLocalStorage();
   }, []);
 
-  const squareRef = useRef(null);
-  const doMeasure = square => {
-    squareRef.current.measure((width, height, px, py, fx, fy) => {
-      const location = {
-        fx: fx,
-        fy: fy,
-        px: px,
-        py: py,
-        width: width,
-        height: height,
-      };
-      console.log('location', location);
-      square.x = fx;
-      square.y = fy;
-      square.xMax = fx + px;
-      square.yMax = fy + py;
+  var getLoginFromLocalStorage = () => {
+    getData('token').then(data => {
+      setIsLogged(data ? true : false);
+    }).catch(e => {
+      setIsLogged(false);
     });
-  };
+  }
 
   return (
     <>
       {
         !loadingCache ?
           <>
-            <MainStatusBar backgroundColor={globalVars.selectedColors.secundary} />
-            <PaperProvider theme={theme}>
-              <Navigation />
-            </PaperProvider>
+            {
+              !isLogged ?
+                <>
+                  <LoginScreen setIsLogged={setIsLogged}/>
+                </>
+                :
+                <>
+                  <MainStatusBar backgroundColor={globalVars.selectedColors.secundary} />
+                  <PaperProvider theme={theme}>
+                    <Navigation />
+                  </PaperProvider>
+                </>
+            }
           </>
           : null
       }

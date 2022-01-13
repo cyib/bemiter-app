@@ -1,7 +1,7 @@
 module.exports = {
     //Theme
     theme: {
-        mode: 'dark', //default, dark
+        mode: 'default', //default, dark
         primaryColor: '#3498db',
         secundaryColor: '#95c5e5',
         accentColor: 'gray',

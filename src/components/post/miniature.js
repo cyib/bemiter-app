@@ -5,7 +5,8 @@ import { Avatar, Card, Title, ActivityIndicator } from 'react-native-paper';
 import globalVars from '../../helpers/globalVars';
 
 const CardSimple = (props) => {
-  var source = props.src ? props.src : `https://picsum.photos/400/400?random=${getRandomInt(1, 100)}`;
+  var [randomNum, setRandomNum] = useState(getRandomInt(1, 1000));
+  var source = props.src ? props.src : `https://picsum.photos/400/400?random=${randomNum}`;
   var [loading, setLoading] = useState(true);
 
   return (

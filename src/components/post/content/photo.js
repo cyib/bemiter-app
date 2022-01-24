@@ -1,9 +1,10 @@
 import * as React from 'react';
 import { useState, useEffect } from 'react';
 import { Image, View } from 'react-native';
+import { apiUrl } from '../../../helpers/environment';
 
 const ContentPhoto = (props) => {
-  var [source, setSource] = useState(props.src ? props.src : `https://picsum.photos/800/600?random=${getRandomInt(1, 100)}`);
+  var [source, setSource] = useState(props.src ? `${apiUrl}/gateway?url=${props.src}` : null);
 
   return (
     <View style={{ maxHeight: 500, zIndex: -1 }}>

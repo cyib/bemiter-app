@@ -2,6 +2,7 @@ import React, { useEffect, useRef, useState } from "react";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import { NavigationContainer, useRoute } from "@react-navigation/native";
+import { View } from "react-native";
 
 //screens
 import HomeScreen from "./screens/home";

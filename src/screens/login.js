@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import {
     ImageBackground,
     TouchableOpacity,
@@ -6,42 +6,89 @@ import {
     KeyboardAvoidingView,
     StyleSheet, Text, View,
     TextInput,
-    Image
+    Image,
+    Alert
 } from "react-native";
 import { Button } from "react-native-paper";
+import { apiUrl } from "../helpers/environment";
 import globalVars from "../helpers/globalVars";
+import { setData, getData } from '../../src/helpers/cache';
 
-const image = { uri: "https://i.imgur.com/l1GfwNJ.gif" };
+const image = { uri: "https://i.pinimg.com/originals/05/7b/2b/057b2be2e40c928f071a47a50769cdf6.jpg" };
 
-const LoginScreen = (props) => (
-    <KeyboardAvoidingView
-        behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
-        style={styles.container}>
-        <ImageBackground source={image} resizeMode="cover" style={styles.image}>
-            <View style={styles.card}>
-                <View style={{width: 200, marginTop: 20}}>
-                    <Text style={{ 
-                        fontSize: 42,
-                        color: 'white', 
-                        width: '100%', 
-                        textAlign: 'center'
-                    }}>
-                    𝔟𝔢𝔪𝔦𝔱𝔢𝔯
-                    </Text>
+const LoginScreen = (props) => {
+
+    var [login, setLogin] = useState(null);
+    var [password, setPassword] = useState(null);
+
+    const OnSubmitLogin = async () => {
+        let res = await fetch(`${apiUrl}/auth/user/login`, {
+            method: 'POST',
+            headers: {
+                'Accept': 'application/json',
+                "Content-Type": "application/json",
+            },
+            body: JSON.stringify({
+                login,
+                password
+            }),
+        });
+
+        let responseJson = await res.json();
+        console.log(res.status);
+        if (res.status == 200) {
+            console.log(Platform.OS, responseJson.User.name);
+            await setData('token', responseJson.token);
+            props.setIsLogged(true);
+        }else if(res.status == 401){
+            Alert.alert(responseJson.message);
+        }else{
+            Alert.alert('server error');
+        }
+
+        //
+    }
+
+    return (
+        <KeyboardAvoidingView
+            behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
+            style={styles.container}>
+            <ImageBackground source={image} resizeMode="cover" style={styles.image}>
+                <View style={styles.card}>
+                    <View style={{ width: 200, marginTop: 20 }}>
+                        <Text style={{
+                            fontSize: 42,
+                            color: 'white',
+                            width: '100%',
+                            textAlign: 'center'
+                        }}>
+                            𝔟𝔢𝔪𝔦𝔱𝔢𝔯
+                        </Text>
+                    </View>
+                    <TextInput
+                        placeholderTextColor="#ffffff9f"
+                        style={styles.input}
+                        secureTextEntry={false}
+                        placeholder="Username ou email"
+                        onChangeText={(value) => setLogin(value)}></TextInput>
+                    <TextInput
+                        placeholderTextColor="#ffffff9f"
+                        secureTextEntry={true}
+                        style={styles.input}
+                        placeholder="Senha"
+                        onChangeText={(value) => setPassword(value)}></TextInput>
+                    <TouchableOpacity style={styles.button}
+                        onPress={() => OnSubmitLogin()}>
+                        <Text style={{
+                            color: 'white',
+                            fontSize: 18,
+                        }}>Entrar</Text>
+                    </TouchableOpacity>
                 </View>
-                <TextInput style={styles.input}>Login</TextInput>
-                <TextInput secureTextEntry={true} style={styles.input}>Password</TextInput>
-                <TouchableOpacity style={styles.button}
-                onPress={() => props.setIsLogged(true)}>
-                    <Text style={{
-                        color: 'white',
-                        fontSize: 18,
-                    }}>Entrar</Text>
-                </TouchableOpacity>
-            </View>
-        </ImageBackground>
-    </KeyboardAvoidingView>
-);
+            </ImageBackground>
+        </KeyboardAvoidingView>
+    );
+}
 
 const styles = StyleSheet.create({
     container: {
@@ -80,7 +127,7 @@ const styles = StyleSheet.create({
         margin: 10,
         alignItems: 'center',
         textAlign: "center",
-        backgroundColor: "#000000d0",
+        backgroundColor: "#000000e0",
         zIndex: 0
     },
     text: {

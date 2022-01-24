@@ -28,7 +28,7 @@ const ReactTouch = (props) => {
     return (
             <View style={styles.container}>
                 <Animated.View
-                onTouchStart={() => { console.log(false); props.setScrollEnabled(false); }}
+                onTouchStart={() => { props.setScrollEnabled(false); }}
                     style={{
                         transform: [{ translateX: pan.x }, { translateY: pan.y }]
                     }}

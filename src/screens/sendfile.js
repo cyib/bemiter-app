@@ -22,8 +22,6 @@ export default function SendFile() {
             quality: 1,
         });
 
-        console.log(result);
-
         if (!result.cancelled) {
             setFile(result);
             navigation.navigate('EditorFeed', {

@@ -10,11 +10,13 @@ module.exports = {
         textColor: '#1a1a1a',
         primaryColor: '#369ae1',
         secundaryColor: '#8ec9f3',
+        backopaqueColor: '#00000007'
     },
     darkTheme: {
         textColor: 'whitesmoke',
-        primaryColor: '#369ae1',
+        primaryColor: '#3381ca',
         secundaryColor: '#3c4043',
+        backopaqueColor: '#ffffff0c'
     },
     selectedColors: {
         secundary: '',
@@ -29,6 +31,7 @@ module.exports = {
         placeholder: '',
         backdrop: '',
         notification: '',
+        backopaque: ''
     },
     currentTheme: {
         colors: {

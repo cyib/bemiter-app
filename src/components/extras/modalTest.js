@@ -17,10 +17,7 @@ function ModalTester() {
       style={{ maxHeight: 200, maxWidth: 300, top: '50%' }}
       swipeDirection={'left'} 
       animationIn={'zoomIn'}
-      animationOut={'zoomOut'}
-      onTouchStart={() => console.log('movendo')}
-      onTouchMove={() => console.log('movendo')}
-      onSwipeMove={(g) => console.log('swipe', g) }>
+      animationOut={'zoomOut'}>
         <View style={{ flex: 1 }}>
           <Text>Hello!</Text>
 

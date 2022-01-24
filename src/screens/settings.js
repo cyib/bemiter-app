@@ -19,24 +19,29 @@ const SettingsScreen = () => {
                 }}
             >Mudar tema</Text>
             <Button onPress={async () => {
-                globalVars.theme.mode = 'dark'; 
-                console.log(globalVars);
+                globalVars.theme.mode = 'dark';
                 setData('userTheme', 'dark').then(() => {
                     NativeModules.DevSettings.reload();
                 });
-                }}>DARK</Button>
+            }}>DARK</Button>
             <Button onPress={async () => {
-                globalVars.theme.mode = 'default'; 
+                globalVars.theme.mode = 'default';
                 setData('userTheme', 'default').then(() => {
                     NativeModules.DevSettings.reload();
                 });
-                }}>DEFAULT</Button>
-            <Button onPress={async () => { 
-                removeData('userTheme');
-                }}>APAGAR CACHE</Button>
+            }}>DEFAULT</Button>
+            <Button onPress={async () => {
+                console.log('apagando cache ...');
+                await removeData('userTheme');
+            }}>APAGAR CACHE</Button>
+            <Button onPress={async () => {
+                console.log('fazendo logout ...');
+                await removeData('token');
+                NativeModules.DevSettings.reload();
+            }}>LOGOUT</Button>
             {/* <Button onPress={() => navigation.navigate("Stack")}>CHANGE</Button> */}
         </View>
     );
-    }
+}
 
 export default SettingsScreen;

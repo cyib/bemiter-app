@@ -33,16 +33,13 @@ export default class LikeButton extends Component {
 
   render() {
     return (
-      <View onTouchEndCapture={() => this.stopTouch()} onTouchMove={(evt) =>
-        console.log(evt.nativeEvent.touches[0].locationY)
-      }>
+      <View onTouchEndCapture={() => this.stopTouch()}>
         <TouchableOpacity
           style={{ zIndex: -1 }}
           delayPressIn={100} onPressIn={() => {
             this.props.setScrollEnabled(false);
           }}
           delayLongPress={250} onLongPress={() => {
-            console.log('pressed');
             this.setState({ likeReactionsShow: true });
           }}
           onPressOut={() => this.stopTouch()}

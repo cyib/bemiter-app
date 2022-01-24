@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { useState, useEffect, useRef } from 'react';
-import { View, Text, Vibration, TouchableOpacity } from 'react-native';
+import { View, Text, Vibration, TouchableOpacity, Platform } from 'react-native';
 import { Video } from 'expo-av';
 import globalVars from '../../../helpers/globalVars';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
@@ -29,7 +29,23 @@ const ContentVideo = (props) => {
       global.videosRefs.push(videoRef);
       setRegVideoRefGlobal(true);
     }
-  }, []);
+  }, [retryCounter]);
+
+  const [retryCounter, setRetryCounter] = useState(0);
+  const [haveErrorYet, setHaveErrorYet] = useState(true);
+  const retryAndChangeSource = () => {
+    if (haveErrorYet) {
+      setTimeout(() => {
+        if (source.indexOf('https://ipfs.io/') == -1) {
+          var path = source.split('//')[1].split('.')[0];
+          var namefile = source.split('link/')[1];
+          setSource(`https://ipfs.io/ipfs/${path}/${namefile}`)
+        } else {
+          setSource(props.src);
+        }
+      }, 10000);
+    }
+  }
 
   return (
     <View>
@@ -38,23 +54,35 @@ const ContentVideo = (props) => {
           activeOpacity={1}
           delayLongPress={500}
           onLongPress={() => {
-            console.log('long');
             videoRef.current.setPositionAsync(0);
           }}
-          onPress={() =>{
+          onPress={() => {
             isPlaying ? setIsPlaying(false) : setIsPlaying(true)
           }
           }>
           <Video
+            key={`${props.src}-video-${retryCounter}`}
             ref={videoRef}
             style={{ height: 500, zIndex: -1 }}
-            source={{ uri: source }}
+            source={{ 
+              uri: source, 
+              cache: 'only-if-cached' 
+            }}
             resizeMode="cover"
             onPlaybackStatusUpdate={status => {
               setStatus(() => status)
             }}
             useNativeControls={false}
-            onReadyForDisplay={() => props.setLoading(false)}
+            onReadyForDisplay={() => {
+              props.setLoading(false);
+              setHaveErrorYet(false);
+            }}
+            onError={() => {
+              setRetryCounter((v) => v + 1);
+              if (retryCounter <= 1) {
+                retryAndChangeSource();
+              }
+            }}
             isLooping={true}
             shouldPlay={isPlaying}
             isMuted={isMuted}
@@ -74,10 +102,10 @@ const ContentVideo = (props) => {
         </View>
         <TouchableOpacity style={{ position: 'absolute', right: 0, bottom: 0, height: 35, width: 35 }}
           onPress={() => {
-            if(isMuted){
+            if (isMuted) {
               setIsMuted(false);
               muteAllVideos(false);
-            }else{
+            } else {
               setIsMuted(true);
               muteAllVideos(true);
             }

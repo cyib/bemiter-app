@@ -23,6 +23,7 @@ function themeConfig() {
   globalVars.selectedColors = DefaultTheme.colors;
   globalVars.selectedColors.primary = globalVars.defaultTheme.primaryColor;
   globalVars.selectedColors.secundary = globalVars.defaultTheme.secundaryColor;
+  globalVars.selectedColors.backopaque = globalVars.defaultTheme.backopaqueColor;
 
   var customTextProps;
 
@@ -39,6 +40,7 @@ function themeConfig() {
     globalVars.selectedColors = DarkTheme.colors;
     globalVars.selectedColors.primary = globalVars.darkTheme.primaryColor;
     globalVars.selectedColors.secundary = globalVars.darkTheme.secundaryColor;
+    globalVars.selectedColors.backopaque = globalVars.darkTheme.backopaqueColor;
 
     customTextProps = {
       style: {
@@ -62,7 +64,6 @@ function themeConfig() {
 
 async function getUserInfo() {
   var info = {
-    userId: '123asd456',
     themeName: 'default',
   }
 
@@ -75,6 +76,7 @@ export default function App() {
   var [loadingCache, setLoadingCache] = useState(true);
 
   useEffect(() => {
+    getLoginFromLocalStorage();
     getData('userTheme').then(data => {
       if (data) {
         globalVars.theme.mode = data;
@@ -91,8 +93,6 @@ export default function App() {
       globalVars.theme.mode = 'default';
       setTheme(themeConfig());
     });
-
-    getLoginFromLocalStorage();
   }, []);
 
   var getLoginFromLocalStorage = () => {
@@ -111,14 +111,18 @@ export default function App() {
             {
               !isLogged ?
                 <>
-                  <LoginScreen setIsLogged={setIsLogged}/>
+                  <LoginScreen setIsLogged={setIsLogged} />
                 </>
                 :
                 <>
-                  <MainStatusBar backgroundColor={globalVars.selectedColors.secundary} />
-                  <PaperProvider theme={theme}>
-                    <Navigation />
-                  </PaperProvider>
+                  {
+                    theme ? <>
+                      <MainStatusBar backgroundColor={globalVars.selectedColors.secundary} />
+                      <PaperProvider theme={theme}>
+                        <Navigation />
+                      </PaperProvider>
+                    </> : null
+                  }
                 </>
             }
           </>

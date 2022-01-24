@@ -1,7 +1,10 @@
 import { Platform } from "react-native";
+import { apiUrl } from "./environment";
+import { getData } from './cache';
 
-export default async function uploadFile(singleFile) {
+export default async function uploadFile(singleFile, description, subtitle) {
     console.log('UPLOADING FILE ...');
+    var token = await getData('token');
     if (singleFile != null) {
         const data = new FormData();
         data.append('file', {
@@ -9,12 +12,15 @@ export default async function uploadFile(singleFile) {
             name: typeFile(singleFile).name,
             type: typeFile(singleFile).complete
         });
+        data.append('description', description);
+        data.append('subtitle', subtitle);
         // Please change file upload URL
-        let res = await fetch(`http://192.168.0.100:3000/dev/upload`, {
+        let res = await fetch(`${apiUrl}/user/newpost`, {
             method: 'POST',
             headers: {
                 'Accept': 'application/json',
                 "Content-Type": "multipart/form-data",
+                "Authorization": `Bearer ${token}`
             },
             body: data,
         });

@@ -9,6 +9,8 @@ import { TextInput } from "react-native-paper";
 const EditorScreen = (props) => {
     var [file, setFile] = useState(props.route.params.file);
     var [description, setDescription] = useState('');
+    var [subtitle, setSubtitle] = useState('');
+    var [sendButtonDisabled, setSendButtonDisabled] = useState(false);
 
     var maxWidth = Dimensions.get('screen').width;
     var maxHeight = Dimensions.get('screen').height;
@@ -29,6 +31,16 @@ const EditorScreen = (props) => {
                 </Row>
                 <Row>
                     <Col>
+                        <TextInput placeholder="Local da publicação ... "
+                            onChangeText={(text) => setSubtitle(text)} maxLength={50}>
+                        </TextInput>
+                        <View>
+                            <Text>{subtitle.length}/50</Text>
+                        </View>
+                    </Col>
+                </Row>
+                <Row>
+                    <Col>
                         <View style={{ width: '100%', justifyContent: 'center' }}>
                             {file ?
                                 <>
@@ -44,20 +56,26 @@ const EditorScreen = (props) => {
                 </Row>
                 <Row>
                     <Col>
-                        <TouchableOpacity onPress={() => { uploadFile(file) }}
+                        <TouchableOpacity onPress={() => {
+                            uploadFile(file, description, subtitle);
+                            setSendButtonDisabled(true);
+                        }}
+                            disabled={sendButtonDisabled}
                             style={{
-                                backgroundColor: 'black',
+                                backgroundColor: sendButtonDisabled ? 'gray' : 'black',
                                 width: '100%',
                                 alignItems: 'center',
                                 padding: 15, borderRadius: 5
                             }}>
-                            <Text style={{ fontSize: 20 }}>PUBLICAR</Text>
+                            <Text style={{ fontSize: 20 }}>{
+                                sendButtonDisabled ? 'PUBLICANDO ...' : 'PUBLICAR'
+                            }</Text>
                         </TouchableOpacity>
                     </Col>
                 </Row>
                 <Row>
                     <Col>
-                        <View style={{ height: 175, width: '100%'}} />
+                        <View style={{ height: 175, width: '100%' }} />
                     </Col>
                 </Row>
             </ScrollView>

@@ -25,8 +25,7 @@ export default class IconButton extends Component {
       <View>
         <View
         style={{height: this.state.size}}
-          onPress={() => {
-          }}>
+          onPress={() => this.props.onPress ? this.props.onPress : null}>
           <Text>
               <MaterialCommunityIcons name={this.state.icon} color={this.state.color} size={this.state.size} />
           </Text>

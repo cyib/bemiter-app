@@ -160,7 +160,7 @@ function PraiseButton({
   return (
     <TouchableOpacity
       onPress={() => {
-        setAnimationOut("fadeOutUpBig");
+        setAnimationOut("slideOutUp");
         setSelect(!selected);
         if(exit) setVisibleModal(false);
       }}

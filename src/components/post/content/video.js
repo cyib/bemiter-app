@@ -6,6 +6,7 @@ import globalVars from '../../../helpers/globalVars';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { muteAllVideos } from '../../../helpers/utils';
+import { apiUrl } from '../../../helpers/environment';
 
 const ContentVideo = (props) => {
   var [source, setSource] = useState(props.src ? props.src : null);
@@ -66,7 +67,7 @@ const ContentVideo = (props) => {
             style={{ height: 500, zIndex: -1 }}
             source={{ 
               uri: source, 
-              cache: 'only-if-cached' 
+              cache: 'only-if-cached',
             }}
             resizeMode="cover"
             onPlaybackStatusUpdate={status => {
@@ -78,10 +79,10 @@ const ContentVideo = (props) => {
               setHaveErrorYet(false);
             }}
             onError={() => {
-              setRetryCounter((v) => v + 1);
-              if (retryCounter <= 1) {
-                retryAndChangeSource();
-              }
+              // setRetryCounter((v) => v + 1);
+              // if (retryCounter <= 1) {
+              //   retryAndChangeSource();
+              // }
             }}
             isLooping={true}
             shouldPlay={isPlaying}

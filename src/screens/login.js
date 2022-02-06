@@ -39,6 +39,7 @@ const LoginScreen = (props) => {
         if (res.status == 200) {
             console.log(Platform.OS, responseJson.User.name);
             await setData('token', responseJson.token);
+            await setData('userInfo', responseJson.User);
             props.setIsLogged(true);
         }else if(res.status == 401){
             Alert.alert(responseJson.message);
@@ -57,12 +58,12 @@ const LoginScreen = (props) => {
                 <View style={styles.card}>
                     <View style={{ width: 200, marginTop: 20 }}>
                         <Text style={{
-                            fontSize: 42,
+                            fontSize: 36,
                             color: 'white',
                             width: '100%',
                             textAlign: 'center'
                         }}>
-                            𝔟𝔢𝔪𝔦𝔱𝔢𝔯
+                            𝗕𝗘𝗠𝗜𝗧𝗘𝗥
                         </Text>
                     </View>
                     <TextInput

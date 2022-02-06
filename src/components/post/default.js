@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { useState, useEffect } from 'react';
-import { View, Image } from 'react-native';
+import { View, Image, TouchableOpacity } from 'react-native';
 import { Avatar, Card, Text, ActivityIndicator } from 'react-native-paper';
 import globalVars from '../../helpers/globalVars';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
@@ -15,8 +15,11 @@ import { apiUrl } from '../../helpers/environment';
 import { getData } from '../../helpers/cache';
 import PraiseComponent from '../praise/default';
 import DoubleTap from '../utils/DoubleTap';
+import { useNavigation } from '@react-navigation/native';
 
 const CardSimple = (props) => {
+  const navigation = useNavigation();
+
   //POST INFO
   var [loading, setLoading] = useState(false);
   var [liked, setLiked] = useState(props.liked ? props.liked : false);
@@ -25,6 +28,7 @@ const CardSimple = (props) => {
   var [votes, setVotes] = useState(props.votes ? props.votes : 0);
   var [createdAt, setCreatedAt] = useState(props.createdAt ? new Date(props.createdAt) : null);
   var [onlyContent, setOnlyContent] = useState(props.onlyContent ? props.onlyContent : false);
+  var [withoutHeader, setWithoutHeader] = useState(props.withoutHeader ? props.withoutHeader : false);
 
   var [type, setType] = useState(props.type ? props.type : 'photo');
 
@@ -48,6 +52,7 @@ const CardSimple = (props) => {
   var [catalogDescription, setCatalogDescription] = useState(props.catalogDescription ? props.catalogDescription : null);
 
   //USER INFOS
+  var [userId, setUserId] = useState(props.userId ? props.userId : null);
   var [name, setName] = useState(props.name ? props.name : `Username`);
   var [subtitle, setSubtitle] = useState(props.subtitle ? props.subtitle : ` `);
   var [profileImage, setProfileImage] = useState(props.profileImage ? props.profileImage : `https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRl8UcJiZxXc_q-Zr-1dohkW5sd8lTxvpPj-g&usqp=CAU`)
@@ -82,6 +87,12 @@ const CardSimple = (props) => {
     isSaved(value_);
   }
 
+  function gotoProfile() {
+    navigation.navigate('ProfileFeed', {
+      profileId: userId
+    })
+  }
+
   return (
     <View>
       <Card style={{
@@ -89,14 +100,16 @@ const CardSimple = (props) => {
         borderBottomColor: globalVars.currentTheme.colors.background,
         borderBottomWidth: 4,
       }}>
-        {!onlyContent ? <>
+        {(!onlyContent || !withoutHeader) ? <>
           <Card.Title title={name} subtitle={subtitle} left={() =>
-            <Image style={{
-              borderRadius: 3, width: 48, height: 48,
-              marginLeft: -5,
-              backgroundColor: globalVars.currentTheme.colors.primary
-            }}
-              source={{ uri: profileImage }} />
+            <TouchableOpacity onPress={() => gotoProfile()}>
+              <Image style={{
+                borderRadius: 3, width: 48, height: 48,
+                marginLeft: -5,
+                backgroundColor: globalVars.currentTheme.colors.primary
+              }}
+                source={{ uri: profileImage }} />
+            </TouchableOpacity>
           } right={() => <>
             {createdAt ? <View style={{ position: 'absolute', top: -30, right: 10, padding: 5, alignItems: 'flex-end' }}>
               <Row>

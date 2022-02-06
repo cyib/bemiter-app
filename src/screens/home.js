@@ -23,10 +23,10 @@ const HomeScreen = () => {
                 flexDirection: 'row'
             }}>
                 <Text style={{
-                    fontSize: 28,
+                    fontSize: 24,
                     marginVertical: 10,
                     marginLeft: 10, left: 0
-                }}>𝔟𝔢𝔪𝔦𝔱𝔢𝔯</Text>
+                }}>𝗕𝗘𝗠𝗜𝗧𝗘𝗥</Text>
                 <View style={{
                     width: 50, height: 50,
                     position: 'absolute', right: 0,

@@ -1,5 +1,5 @@
 import React, { useEffect, useState, useCallback } from 'react';
-import { StyleSheet, Text, View, FlatList, NativeSyntheticEvent, NativeScrollEvent, Dimensions, ScrollView } from 'react-native';
+import { StyleSheet, Text, View, FlatList, NativeSyntheticEvent, NativeScrollEvent, Dimensions, ScrollView, Alert } from 'react-native';
 import { ActivityIndicator } from 'react-native-paper';
 import { getData } from '../../helpers/cache';
 import { apiUrl } from '../../helpers/environment';
@@ -98,6 +98,7 @@ function ListPost({ data, index }) {
         liked={data.liked ? data.liked : false}
 
         type={data.type}
+        userId={data['User.id']}
         name={data['User.name']}
         profileImage={data['User.avatar']}
         votes={data.likes}

@@ -64,6 +64,7 @@ function FeedStack() {
                 name="ProfileFeed"
                 component={ProfileScreen}
                 options={{
+                    headerShown: false,
                     headerBackTitleVisible: false,
                 }}
             />

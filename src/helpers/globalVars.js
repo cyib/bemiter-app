@@ -10,13 +10,15 @@ module.exports = {
         textColor: '#1a1a1a',
         primaryColor: '#369ae1',
         secundaryColor: '#8ec9f3',
-        backopaqueColor: '#00000007'
+        backopaqueColor: '#00000007',
+        backgroundSecondColor: '#e5ebef',
     },
     darkTheme: {
         textColor: 'whitesmoke',
         primaryColor: '#3381ca',
         secundaryColor: '#3c4043',
-        backopaqueColor: '#ffffff0c'
+        backopaqueColor: '#ffffff0c',
+        backgroundSecondColor: '#2e2f31',
     },
     selectedColors: {
         secundary: '',
@@ -50,6 +52,11 @@ module.exports = {
     },
 
     devlog: "",
+    placeholders: {
+        images: {
+            profile: `https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRl8UcJiZxXc_q-Zr-1dohkW5sd8lTxvpPj-g&usqp=CAU`
+        },
+    },
 
     //Header
     header: {

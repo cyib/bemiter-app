@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { View, Text, ScrollView, TouchableOpacity, Dimensions } from "react-native";
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import { useNavigation } from "@react-navigation/native";
-import Post from "../components/post/default";
+import Post from "../components/post/post";
 import TopLoading from "../components/extras/topLoading";
 import StoryMiniature from "../components/story/miniature";
 import globalVars from "../helpers/globalVars";
@@ -27,6 +27,11 @@ const HomeScreen = () => {
                     marginVertical: 10,
                     marginLeft: 10, left: 0
                 }}>𝗕𝗘𝗠𝗜𝗧𝗘𝗥</Text>
+                <Text style={{
+                    fontSize: 10,
+                    marginVertical: 10,
+                    marginLeft: 5, left: 0,
+                }}>alpha v1.0</Text>
                 <View style={{
                     width: 50, height: 50,
                     position: 'absolute', right: 0,

@@ -1,8 +1,10 @@
 import React, { useState } from "react";
-import { FlatList, Image, Text, View } from "react-native";
+import { Dimensions, FlatList, Image, Text, View } from "react-native";
 import { Col, Row } from "react-native-paper-grid";
 import globalVars from "../../helpers/globalVars";
+import postTemplates from "../../helpers/postTemplates";
 import IconButton from "./iconButton";
+import Post from "../post/post";
 
 var defaultSize = 144;
 //GRIDTYPES: 
@@ -39,7 +41,7 @@ function W_DEFAULT_GALERY(colors, edit = false, contents = null) {
     return (
         <>
             <ShapeCard colors={colors} edit={edit}>
-                <View style={{ width: '100%', margin: 3 }}>
+                <View style={{ width: '100%' }}>
                     <FlatList
                         key={(item) => item.id}
                         horizontal={true}
@@ -81,16 +83,42 @@ function W_BANNER(colors, edit = false, contents = null) {
 }
 
 function W_LAST_EMIT(colors, edit = false, contents = null) {
+    var data = postTemplates.text;
+    console.log(data.content);
+    var content = JSON.parse(data.content);
     return (
         <>
             <ShapeCard colors={colors} edit={edit} height={200}>
+                <Row>
+                    <Col>
+                    <View style={{ marginHorizontal: 10, marginBottom: -10, marginTop: 5 }}>
+                        <Text style={{ fontSize: 14 }}>emit mais recente</Text>
+                        </View>
+                    </Col>
+                </Row>
                 <Row style={{ height: defaultSize }}>
-                    <Col style={{ margin: 0, padding: 0, marginRight: 5 }}>
-                        {contents ? contents[0] :
+                    <Col>
                             <>
-                                
+                                <Post
+                                    postId={data.id}
+                                    liked={data.liked ? data.liked : false}
+                                    
+                                    withoutHeader={true}
+                                    withoutFooter={false}
+                                    withoutSend={true}
+                                    withoutSave={true}
+                                    
+                                    type={data.type}
+                                    userId={data['User.id']}
+                                    name={data['User.name']}
+                                    profileImage={data['User.avatar']}
+                                    votes={data.likes}
+
+                                    src={content.source}
+                                    content={content.description}
+                                    createdAt={data.createdAt}
+                                />
                             </>
-                        }
                     </Col>
                 </Row>
             </ShapeCard>

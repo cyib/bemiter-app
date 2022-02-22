@@ -7,9 +7,19 @@ import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityI
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { muteAllVideos } from '../../../helpers/utils';
 import { apiUrl } from '../../../helpers/environment';
+import { useNavigation } from "@react-navigation/native";
 
 const ContentVideo = (props) => {
+  const navigation = useNavigation();
+  var [postId, setPostId] = useState(props.postData.id ? props.postData.id : null);
   var [source, setSource] = useState(props.src ? props.src : null);
+  var [withSourceHeight, setWithSourceHeight] = useState(props.withSourceHeight ? props.withSourceHeight : 500);
+  var [withSourceBorderValue, setWithSourceBorderValue] = useState(props.withSourceBorderValue ? props.withSourceBorderValue : 0);
+  var [withoutVolume, setWithoutVolume] = useState(props.withoutVolume ? props.withoutVolume : false);
+  var [withoutPlay, setWithoutPlay] = useState(props.withoutPlay ? props.withoutPlay : false);
+  var [withGoToPost, setWithGoToPost] = useState(props.withGoToPost ? props.withGoToPost : false);
+  var [buttonColor, setButtonColor] = useState(props.buttonColor ? props.buttonColor : globalVars.selectedColors.secundary);
+  var [iconColor, setIconColor] = useState(props.iconColor ? props.iconColor : globalVars.selectedColors.text);
 
   const [status, setStatus] = useState({});
   const [isPlaying, setIsPlaying] = useState(false);
@@ -22,13 +32,16 @@ const ContentVideo = (props) => {
   useEffect(() => {
     if (isInit) {
       setIsInit(false);
+      if (withoutVolume) setIsMuted(true);
     }
-    if (videoRef && !regVideoRefGlobal) {
-      videoRef.setIsPlaying = setIsPlaying;
-      videoRef.setIsMuted = setIsMuted;
-      if (!global.videosRefs) global.videosRefs = [];
-      global.videosRefs.push(videoRef);
-      setRegVideoRefGlobal(true);
+    if (!withoutPlay) {
+      // if (videoRef && !regVideoRefGlobal) {
+      //   videoRef.setIsPlaying = setIsPlaying;
+      //   videoRef.setIsMuted = setIsMuted;
+      //   if (!global.videosRefs) global.videosRefs = [];
+      //   global.videosRefs.push(videoRef);
+      //   setRegVideoRefGlobal(true);
+      // }
     }
   }, [retryCounter]);
 
@@ -48,25 +61,36 @@ const ContentVideo = (props) => {
     }
   }
 
+  const pressPlay = () => {
+    if(!withoutPlay && !withGoToPost){
+      isPlaying ? setIsPlaying(false) : setIsPlaying(true)
+    }
+    if(withGoToPost){
+      navigation.navigate('PostProfile', {
+        postId
+      });
+    }
+  }
+
   return (
     <View>
-      <View>
+      <View onTouchMove={() => {setIsPlaying(false)}}>
         <TouchableOpacity
-          activeOpacity={1}
+          activeOpacity={withGoToPost ? 0.5 : 1}
           delayLongPress={500}
           onLongPress={() => {
             videoRef.current.setPositionAsync(0);
           }}
           onPress={() => {
-            isPlaying ? setIsPlaying(false) : setIsPlaying(true)
+            pressPlay();
           }
           }>
           <Video
             key={`${props.src}-video-${retryCounter}`}
             ref={videoRef}
-            style={{ height: 500, zIndex: -1 }}
-            source={{ 
-              uri: source, 
+            style={{ height: withSourceHeight, zIndex: -1, borderRadius: withSourceBorderValue }}
+            source={{
+              uri: source,
               cache: 'only-if-cached',
             }}
             resizeMode="cover"
@@ -89,39 +113,56 @@ const ContentVideo = (props) => {
             isMuted={isMuted}
           />
         </TouchableOpacity>
-        <View style={{ position: 'absolute' }}>
-          {
-            status.isPlaying ?
-              <Text>
-                <MaterialCommunityIcons name="pause" color={globalVars.selectedColors.background} size={15} />
-              </Text>
-              :
-              <Text>
-                <MaterialCommunityIcons name="play" color={globalVars.selectedColors.background} size={15} />
-              </Text>
-          }
-        </View>
-        <TouchableOpacity style={{ position: 'absolute', right: 0, bottom: 0, height: 35, width: 35 }}
-          onPress={() => {
-            if (isMuted) {
-              setIsMuted(false);
-              muteAllVideos(false);
-            } else {
-              setIsMuted(true);
-              muteAllVideos(true);
-            }
+        <View style={{ position: 'absolute' }}
+          onTouchEnd={() => {
+            pressPlay();
           }}>
           {
-            !isMuted ?
-              <Text>
-                <MaterialCommunityIcons name="volume-source" color={globalVars.selectedColors.background} size={30} />
-              </Text>
+            status.isPlaying ?
+              <View style={{
+                backgroundColor: buttonColor,
+                borderRadius: 4, padding: 2, margin: 3
+              }}>
+                <Text>
+                  <MaterialCommunityIcons name="pause" color={iconColor} size={16} />
+                </Text>
+              </View>
               :
-              <Text>
-                <MaterialCommunityIcons name="volume-off" color={globalVars.selectedColors.background} size={30} />
-              </Text>
+              <View style={{
+                backgroundColor: buttonColor,
+                borderRadius: 4, padding: 2, margin: 3
+              }}>
+                <Text>
+                  <MaterialCommunityIcons name="play" color={iconColor} size={16} />
+                </Text>
+              </View>
           }
-        </TouchableOpacity>
+        </View>
+        {!withoutVolume ?
+          <TouchableOpacity style={{
+            position: 'absolute', right: 0, bottom: 0,
+            backgroundColor: buttonColor,
+            borderRadius: 5, padding: 4, margin: 3
+          }}
+            onPress={() => {
+              if (isMuted) {
+                setIsMuted(false);
+              } else {
+                setIsMuted(true);
+              }
+            }}>
+            {
+              !isMuted ?
+                <Text>
+                  <MaterialCommunityIcons name="volume-source" color={globalVars.selectedColors.text} size={25} />
+                </Text>
+                :
+                <Text>
+                  <MaterialCommunityIcons name="volume-off" color={globalVars.selectedColors.text} size={25} />
+                </Text>
+            }
+          </TouchableOpacity>
+          : null}
       </View>
     </View>
   );

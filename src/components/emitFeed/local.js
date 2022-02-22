@@ -8,7 +8,7 @@ import { pauseAllVideos } from '../../helpers/utils';
 import Post from "../post/post";
 import StoryMiniature from "../../components/story/miniature";
 
-export default function ComponentFeed() {
+export default function ComponentEmitFeedLocal() {
     const perPage = 3;
 
     const [data, setData] = useState([]);
@@ -94,7 +94,7 @@ export default function ComponentFeed() {
 
 function ListPost({ data, index }) {
     let content = JSON.parse(data.content);
-    return (<Post data={data} withMaxLinesToText={1} withGoToPostOnlyDescription={true}/>)
+    return (<Post data={data}/>)
 }
 
 function FooterList({ load, refresh }) {
@@ -111,7 +111,6 @@ function FooterList({ load, refresh }) {
 
 function HeaderComponent({ refresh }) {
     if(refresh) return null;
-    return null;
     return (
         <>
             <ScrollView horizontal={true} showsHorizontalScrollIndicator={false}>

@@ -9,6 +9,7 @@ import { apiUrl } from "../../helpers/environment";
 import globalVars from "../../helpers/globalVars";
 import profileThemes from "../../helpers/profileThemes";
 import widgetShape, { widgetList } from "../extras/widgetShapes";
+import IconButton from "../extras/iconButton";
 import uuid from 'react-native-uuid';
 
 export default function WidgetModal(props) {
@@ -23,11 +24,9 @@ export default function WidgetModal(props) {
     setModalVisible(!isModalVisible);
   };
   return (
-    <View style={{ flex: 1, zIndex: 9999 }}>
+    <View style={{ flex: 1, borderRadius: 5, margin: 5 }}>
       <TouchableOpacity onPress={toggleModal}>
-        <Text style={{ color: globalVars.selectedColors.text }}>
-          <MaterialCommunityIcons name={"view-grid-plus"} size={60} />
-        </Text>
+          <IconButton icon={'view-grid-plus'} color={colors.secundary} size={56} />
       </TouchableOpacity>
 
       <Modal isVisible={isModalVisible}

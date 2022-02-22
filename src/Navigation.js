@@ -1,14 +1,16 @@
 import React, { useEffect, useRef, useState } from "react";
-import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
-import { createNativeStackNavigator } from "@react-navigation/native-stack";
+import { createBottomTabNavigator, useBottomTabBarHeight } from "@react-navigation/bottom-tabs";
+import { createNativeStackNavigator, useHeaderHeight  } from "@react-navigation/native-stack";
 import { NavigationContainer, useRoute } from "@react-navigation/native";
-import { View } from "react-native";
+import { View, Text } from "react-native";
 
 //screens
 import HomeScreen from "./screens/home";
 import SettingsScreen from "./screens/settings";
 import StackScreen from "./screens/stack";
 import ProfileScreen from "./screens/profile";
+import PostScreen from "./screens/post";
+import CreateEmitScreen from './screens/createEmit';
 
 //icons
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
@@ -20,6 +22,7 @@ import CameraScreen from "./screens/camera";
 import SendFile from "./screens/sendfile";
 import EditorScreen from "./screens/editor";
 import ForumScreen from "./screens/forum";
+import EmitsScreen from "./screens/emits";
 
 const FeedStackNavigator = createNativeStackNavigator();
 
@@ -34,6 +37,7 @@ function FeedStack() {
                 options={{
                     headerShown: false,
                     headerBackTitleVisible: false,
+                    contentStyle: { backgroundColor: globalVars.selectedColors.background}
                 }}
             />
             <FeedStackNavigator.Screen
@@ -45,7 +49,8 @@ function FeedStack() {
                     headerShown: true,
                     headerBackTitleVisible: true,
                     headerTintColor: globalVars.selectedColors.text,
-                    headerStyle: { backgroundColor: globalVars.selectedColors.background }
+                    headerStyle: { backgroundColor: globalVars.selectedColors.background },
+                    contentStyle: { backgroundColor: globalVars.selectedColors.background}
                 }}
             />
             <FeedStackNavigator.Screen
@@ -57,21 +62,143 @@ function FeedStack() {
                     headerShown: true,
                     headerBackTitleVisible: true,
                     headerTintColor: globalVars.selectedColors.text,
-                    headerStyle: { backgroundColor: globalVars.selectedColors.background }
+                    headerStyle: { backgroundColor: globalVars.selectedColors.background },
+                    contentStyle: { backgroundColor: globalVars.selectedColors.background}
                 }}
             />
             <FeedStackNavigator.Screen
                 name="ProfileFeed"
                 component={ProfileScreen}
                 options={{
-                    headerShown: false,
+                    animation: "slide_from_right",
+                    title: 'Perfil',
+                    headerBackTitle: 'Voltar',
+                    headerShown: true,
                     headerBackTitleVisible: false,
+                    headerTintColor: globalVars.selectedColors.text,
+                    headerStyle: { backgroundColor: globalVars.selectedColors.background },
+                    contentStyle: { backgroundColor: globalVars.selectedColors.background}
+                }}
+            />
+            <FeedStackNavigator.Screen
+                name="PostProfile"
+                component={PostScreen}
+                options={{
+                    animation: "slide_from_right",
+                    title: 'Postagem',
+                    headerBackTitle: 'Voltar',
+                    headerShown: true,
+                    headerBackTitleVisible: true,
+                    headerTintColor: globalVars.selectedColors.text,
+                    headerStyle: { backgroundColor: globalVars.selectedColors.background },
+                    contentStyle: { backgroundColor: globalVars.selectedColors.background}
                 }}
             />
         </FeedStackNavigator.Navigator>
     )
 }
 
+function FeedEmitStack() {
+    return (
+        <FeedStackNavigator.Navigator
+            initialRouteName="Home"
+        >
+            <FeedStackNavigator.Screen
+                name="HomeFeed"
+                component={EmitsScreen}
+                options={{
+                    headerShown: false,
+                    headerBackTitleVisible: false,
+                }}
+            />
+            <FeedStackNavigator.Screen
+                name="CreateFeed"
+                component={CreateEmitScreen}
+                options={{
+                    title: 'Novo emit',
+                    headerBackTitle: 'Feed',
+                    headerShown: true,
+                    headerBackTitleVisible: true,
+                    headerTintColor: globalVars.selectedColors.text,
+                    headerStyle: { backgroundColor: globalVars.selectedColors.background },
+                    contentStyle: { backgroundColor: globalVars.selectedColors.background}
+                }}
+            />
+            <FeedStackNavigator.Screen
+                name="EditorFeed"
+                component={EditorScreen}
+                options={{
+                    title: 'Editar',
+                    headerBackTitle: 'Voltar',
+                    headerShown: true,
+                    headerBackTitleVisible: true,
+                    headerTintColor: globalVars.selectedColors.text,
+                    headerStyle: { backgroundColor: globalVars.selectedColors.background },
+                    contentStyle: { backgroundColor: globalVars.selectedColors.background}
+                }}
+            />
+            <FeedStackNavigator.Screen
+                name="ProfileFeed"
+                component={ProfileScreen}
+                options={{
+                    animation: "slide_from_right",
+                    title: 'Perfil',
+                    headerBackTitle: 'Voltar',
+                    headerShown: true,
+                    headerBackTitleVisible: false,
+                    headerTintColor: globalVars.selectedColors.text,
+                    headerStyle: { backgroundColor: globalVars.selectedColors.background },
+                    contentStyle: { backgroundColor: globalVars.selectedColors.background}
+                }}
+            />
+            <FeedStackNavigator.Screen
+                name="PostProfile"
+                component={PostScreen}
+                options={{
+                    animation: "slide_from_right",
+                    title: 'Emit',
+                    headerBackTitle: 'Voltar',
+                    headerShown: true,
+                    headerBackTitleVisible: true,
+                    headerTintColor: globalVars.selectedColors.text,
+                    headerStyle: { backgroundColor: globalVars.selectedColors.background },
+                    contentStyle: { backgroundColor: globalVars.selectedColors.background}
+                }}
+            />
+        </FeedStackNavigator.Navigator>
+    )
+}
+
+function ProfileStack() {
+    return (
+        <FeedStackNavigator.Navigator
+            initialRouteName="ProfileProfile"
+        >
+            <FeedStackNavigator.Screen
+                name="ProfileProfile"
+                component={ProfileScreen}
+                options={{
+                    headerShown: false,
+                    headerBackTitleVisible: false,
+                }}
+            />
+            <FeedStackNavigator.Screen
+                name="PostProfile"
+                component={PostScreen}
+                options={{
+                    animation: "simple_push",
+                    title: 'Postagem',
+                    headerBackTitle: 'Voltar',
+                    headerShown: true,
+                    headerBackTitleVisible: true,
+                    headerTintColor: globalVars.selectedColors.text,
+                    headerStyle: { backgroundColor: globalVars.selectedColors.background },
+                    contentStyle: { backgroundColor: globalVars.selectedColors.background}
+                }}
+            />
+        </FeedStackNavigator.Navigator>
+    )
+}
 
 const Tab = createBottomTabNavigator();
 
@@ -95,20 +222,20 @@ function MyTabs() {
                     tabBarShowLabel: false,
                     tabBarInactiveTintColor: globalVars.currentTheme.colors.accent,
                     tabBarIcon: ({ color, size }) => (
-                        <MaterialCommunityIcons name="home" color={color} size={30} />
+                        <MaterialCommunityIcons name="camera-party-mode" color={color} size={30} />
                     ),
                     headerShown: false,
                 }}
             />
             <Tab.Screen
-                name="ForumTab"
-                component={ForumScreen}
+                name="EmitsTab"
+                component={FeedEmitStack}
                 options={{
                     tabBarShowLabel: false,
                     tabBarInactiveTintColor: globalVars.currentTheme.colors.accent,
                     headerShown: false,
                     tabBarIcon: ({ color, size }) => (
-                        <MaterialCommunityIcons name="forum" color={color} size={30} />
+                        <MaterialCommunityIcons name="comment-quote" color={color} size={30} />
                     ),
                 }}
             />
@@ -120,13 +247,13 @@ function MyTabs() {
                     tabBarInactiveTintColor: globalVars.currentTheme.colors.accent,
                     headerShown: false,
                     tabBarIcon: ({ color, size }) => (
-                        <MaterialCommunityIcons name="cog" color={color} size={30} />
+                        <MaterialCommunityIcons name="compass" color={color} size={30} />
                     ),
                 }}
             />
             <Tab.Screen
                 name="ProfileTab"
-                component={ProfileScreen}
+                component={ProfileStack}
                 options={{
                     tabBarShowLabel: false,
                     title: '',

@@ -1,15 +1,24 @@
+const globalVars = require("./globalVars");
+
 module.exports = {
     list: [
         {id: 0, name: 'default'}, 
-        {id: 1, name: 'grapefruit'}, 
-        {id: 2, name: 'bittersweet'}, 
-        {id: 3, name: 'sunflower'}, 
-        {id: 4, name: 'grass'}, 
-        {id: 5, name: 'mint'}, 
-        {id: 6, name: 'aqua'},
-        {id: 7, name: 'pinkrose'},
+        {id: 1, name: 'darkgray'}, 
+        {id: 2, name: 'grapefruit'}, 
+        {id: 3, name: 'bittersweet'}, 
+        {id: 4, name: 'sunflower'}, 
+        {id: 5, name: 'grass'}, 
+        {id: 6, name: 'mint'}, 
+        {id: 7, name: 'aqua'},
+        {id: 8, name: 'pinkrose'},
     ],
     default: {
+        primary: '#6c6c6c',
+        secundary: '#494949',
+        border: '#494949',
+        text: '#F1FAEE'
+    },
+    darkgray: {
         primary: '#434A54',
         secundary: '#656D78',
         border: '#FFFFFA39',

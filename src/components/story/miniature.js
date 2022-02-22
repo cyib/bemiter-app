@@ -4,7 +4,7 @@ import { Image, TouchableOpacity, View, Text, Dimensions } from 'react-native';
 import { ActivityIndicator } from 'react-native-paper';
 import globalVars from '../../helpers/globalVars';
 import Modal from "react-native-modal";
-import Post from "../post/default";
+import Post from "../post/post";
 
 const CardSimple = (props) => {
   var [randomNum, setRandomNum] = useState(getRandomInt(1, 1000));

@@ -34,3 +34,14 @@ export function processDatePost(date) {
     if (Platform.OS == 'android') monthLabel = monthLabel.split(' ')[1];
     return { day, monthLabel }
 }
+
+export function groupArr(data, n) {
+    return data.reduce((r, e, i) =>
+        (i % n ? r[r.length - 1].push(e) : r.push([e])) && r
+        , []);
+}
+
+export function diffTime(firstTap, secondTap) {
+    var diffMs = (secondTap - firstTap);
+    return diffMs;
+}

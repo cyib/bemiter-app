@@ -42,17 +42,6 @@ const CreateScreen = () => {
           <SendFile />
         </Col>
       </Row>
-      <Row>
-        <Col>
-          <Item icon={'comment-text'} color={'white'} />
-        </Col>
-        <Col>
-          <Item icon={'tag'} color={'white'}/>
-        </Col>
-        <Col>
-          <Item icon={'human-greeting'} color={'white'}/>
-        </Col>
-      </Row>
     </SafeAreaView>
   );
 }

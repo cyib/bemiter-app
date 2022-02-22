@@ -1,9 +1,7 @@
 import React, { useEffect, useRef, useState } from 'react';
 import Navigation from './src/Navigation';
 import { DefaultTheme, DarkTheme, Provider as PaperProvider } from 'react-native-paper';
-import { View, Text } from 'react-native';
 import globalVars from './src/helpers/globalVars';
-import TopLoading from './src/components/extras/topLoading';
 import { getData } from './src/helpers/cache';
 import { setCustomText } from 'react-native-global-props';
 import MainStatusBar from './src/components/extras/statusBar';
@@ -24,6 +22,7 @@ function themeConfig() {
   globalVars.selectedColors.primary = globalVars.defaultTheme.primaryColor;
   globalVars.selectedColors.secundary = globalVars.defaultTheme.secundaryColor;
   globalVars.selectedColors.backopaque = globalVars.defaultTheme.backopaqueColor;
+  globalVars.selectedColors.backgroundSecondColor = globalVars.defaultTheme.backgroundSecondColor;
 
   var customTextProps;
 
@@ -41,6 +40,7 @@ function themeConfig() {
     globalVars.selectedColors.primary = globalVars.darkTheme.primaryColor;
     globalVars.selectedColors.secundary = globalVars.darkTheme.secundaryColor;
     globalVars.selectedColors.backopaque = globalVars.darkTheme.backopaqueColor;
+    globalVars.selectedColors.backgroundSecondColor = globalVars.darkTheme.backgroundSecondColor;
 
     customTextProps = {
       style: {

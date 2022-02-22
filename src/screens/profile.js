@@ -29,6 +29,12 @@ const ProfileScreen = (props) => {
     var [userInfo, setUserInfo] = useState(null);
     var [myselfProfile, setMyselfProfile] = useState(false);
 
+    var [readyToLoadBody, setReadyToLoadBody] = useState(false);
+    var [failRefresh, setFailRefresh] = useState(false);
+    useEffect(async () => {
+        
+    }, [readyToLoadBody]);
+
     async function getUserProfile(id) {
         let userToken = await getData('token');
         let response = await fetch(`${apiUrl}/profile/${id}`, {
@@ -49,6 +55,7 @@ const ProfileScreen = (props) => {
                 await setData('userInfo', responseJson.User);
                 setUpdateNow(!updateNow);
             }
+            if(!readyToLoadBody) setReadyToLoadBody(true);
         } else if (response.status == 400) {
             Alert.alert(
                 "Perfil não encotrado!",
@@ -65,6 +72,7 @@ const ProfileScreen = (props) => {
                     { text: "OK", onPress: () => navigation.goBack() }
                 ]
             );
+            setFailRefresh(true);
         }
     }
 
@@ -129,11 +137,15 @@ const ProfileScreen = (props) => {
                                 userInfo={userInfo}
                                 updateNowParentScreen={updateNow}
                                 setUpdateNowParentScreen={setUpdateNow} />
-                            <ProfileBody
-                                userInfo={userInfo}
-                                updateNowParentScreen={updateNow}
-                                myselfProfile={myselfProfile}
-                                setUpdateNowParentScreen={setUpdateNow} />
+                            {
+                                readyToLoadBody ?
+                                    <ProfileBody
+                                        userInfo={userInfo}
+                                        updateNowParentScreen={updateNow}
+                                        myselfProfile={myselfProfile}
+                                        setUpdateNowParentScreen={setUpdateNow} />
+                                    : null
+                            }
                         </Grid>
                     </ScrollView>
                 </View>

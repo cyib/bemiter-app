@@ -77,7 +77,6 @@ const profileHeader = (props) => {
             }
         });
 
-        console.log(response.status);
         if (response.status == 200) {
             let responseJson = await response.json();
             props.setUpdateNowParentScreen(!props.updateNowParentScreen);
@@ -100,6 +99,8 @@ const profileHeader = (props) => {
                             <Image
                                 style={{
                                     borderRadius: 5,
+                                    borderWidth: 1,
+                                    borderColor: colors.border
                                 }}
                                 source={{ uri: userInfo.avatar ? userInfo.avatar : avatarBase, height: 100, width: 100 }} />
                         </View>
@@ -124,21 +125,6 @@ const profileHeader = (props) => {
                                     }}>
                                     @{userInfo.username}
                                 </Text>
-                            </View>
-                            <View style={{
-                                marginTop: 15,
-                                flexDirection: 'row',
-                                justifyContent: 'center',
-                                backgroundColor: colors.secundary,
-                                padding: 5,
-                                borderRadius: 5,
-                                borderWidth: 1,
-                                borderColor: colors.border
-                            }}>
-                                <Text style={{
-                                    fontSize: 11,
-                                    color: colors.text,
-                                }}>Traço: Inteligente</Text>
                             </View>
                         </View>
                         {

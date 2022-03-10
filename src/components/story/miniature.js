@@ -55,9 +55,9 @@ function ModalContent({ isVisible, source, setVisibleModal }) {
             global.endTouch = e.nativeEvent.pageY;
             let startTouch = global.startTouch;
             let endTouch = global.endTouch;
-            console.log(startTouch, endTouch);
+            ;
             if (startTouch < endTouch) {
-              console.log('down');
+              ;
               setVisibleModal(false);
             }
           }}>

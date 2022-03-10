@@ -28,10 +28,13 @@ const profileHeader = (props) => {
 
     var [myselfProfile, setMyselfProfile] = useState(props.myselfProfile ? props.myselfProfile : false);
     var [userInfo, setUserInfo] = useState(props.userInfo ? props.userInfo : userInfoBase);
-    var [colors, setColors] = useState(profileThemes[props.userInfo.theme ? props.userInfo.theme : 'default']);
+    var themeMode = props.userInfo.theme ? (props.userInfo.theme != 'default' ? props.userInfo.theme : `default_${globalVars.theme.mode}`) : `default_${globalVars.theme.mode}` ;
+    var [colors, setColors] = useState(profileThemes[themeMode]);
 
     var [followers, setFollowers] = useState(props.userInfo.followers ? props.userInfo.followers : 0);
     var [following, setFollowing] = useState(props.userInfo.following ? props.userInfo.following : 0);
+    var [postsCount, setPostsCount] = useState(props.userInfo.postsCount ? props.userInfo.postsCount : 0);
+    var [emitsCount, setEmitsCount] = useState(props.userInfo.emitsCount ? props.userInfo.emitsCount : 0);
     var [currConnectionType, setCurrConnectionType] = useState(props.userInfo.connectionType ? props.userInfo.connectionType : null);
 
     useEffect(async () => {
@@ -80,7 +83,7 @@ const profileHeader = (props) => {
         if (response.status == 200) {
             let responseJson = await response.json();
             props.setUpdateNowParentScreen(!props.updateNowParentScreen);
-            console.log(responseJson.message);
+            ;
             if(connectionType == 'unfollow'){
                 setFollowers(followers-1);
             }else{
@@ -91,8 +94,8 @@ const profileHeader = (props) => {
     }
 
     return (<>
-        <View style={{ width: Dimensions.get('screen').width }}>
-            <View style={{ backgroundColor: colors.primary, margin: 5, borderRadius: 5, paddingTop: 5 }}>
+        <View style={{ width: Dimensions.get('screen').width + 2, marginTop: -8 }}>
+            <View style={{ backgroundColor: colors.primary, paddingTop: 10 }}>
                 <Row>
                     <Col size={2}>
                         <View style={{ alignItems: 'center' }}>
@@ -107,7 +110,7 @@ const profileHeader = (props) => {
                     </Col>
                     <Col size={4}>
                         <View style={{
-                            paddingTop: 10,
+                            paddingTop: 0,
                             alignItems: 'flex-start',
                         }}>
                             <View>
@@ -126,6 +129,17 @@ const profileHeader = (props) => {
                                     @{userInfo.username}
                                 </Text>
                             </View>
+                            <View style={{ flexDirection: 'row'}}>
+                                <View style={{ alignItems: 'center', justifyContent: 'center' }}>
+                                    <PlaceCard title={followers} text={"seguidores"} colors={colors} />
+                                </View>
+                                <View style={{ alignItems: 'center', justifyContent: 'center' }}>
+                                    <PlaceCard title={following} text={"seguindo"} colors={colors} />
+                                </View>
+                                <View style={{ alignItems: 'center', justifyContent: 'center' }}>
+                                    <PlaceCard title={postsCount} text={"posts"} colors={colors} />
+                                </View>
+                        </View>
                         </View>
                         {
                             myselfProfile ? 
@@ -143,9 +157,9 @@ const profileHeader = (props) => {
                                 currConnectionType ? 
                                             <TouchableOpacity
                                                 onPress={() => { connection() }}
-                                                style={{ position: 'absolute', right: 10, top: 10 }}>
+                                                style={{ position: 'absolute', right: 5, top: 5 }}>
                                                 {
-                                                    <IconButton icon={'account-off'} color={colors.text} size={40} />
+                                                    <IconButton icon={'heart-broken'} color={colors.text} size={32} />
                                                 }
 
                                             </TouchableOpacity>
@@ -155,9 +169,9 @@ const profileHeader = (props) => {
                                 !currConnectionType ? 
                                             <TouchableOpacity
                                                 onPress={() => { connection() }}
-                                                style={{ position: 'absolute', right: 10, top: 10 }}>
+                                                style={{ position: 'absolute', right: 5, top: 5 }}>
                                                 {
-                                                    <IconButton icon={'account-multiple-plus'} color={colors.text} size={40} />
+                                                    <IconButton icon={'heart-outline'} color={colors.text} size={32} />
                                                 }
 
                                             </TouchableOpacity> 
@@ -170,38 +184,24 @@ const profileHeader = (props) => {
                 </Row>
                 <Row>
                     <Col size={4}>
-                        <View>
-                            <Row>
-                                <Col style={{ alignItems: 'center', justifyContent: 'center' }}>
-                                    <PlaceCard title={followers} text={"seguidores"} colors={colors} />
-                                </Col>
-                                <Col style={{ alignItems: 'center', justifyContent: 'center' }}>
-                                    <PlaceCard title={following} text={"seguindo"} colors={colors} />
-                                </Col>
-                                <Col style={{ alignItems: 'center', justifyContent: 'center' }}>
-                                    <PlaceCard title={0} text={"publicações"} colors={colors} />
-                                </Col>
-                            </Row>
-                        </View>
+                        <View style={{ height: 20, width: '100%'}}></View>
                     </Col>
                 </Row>
             </View>
         </View>
+        <View style={{ position: 'absolute', left: -20, top: -500, height: Dimensions.get('screen').height + 1000, width: Dimensions.get('screen').width + 200, 
+        backgroundColor: colors.primary, zIndex: -1}}/>
     </>)
 }
 
 function PlaceCard({ title, text, colors }) {
     return (
         <View style={{
-            backgroundColor: colors.secundary,
-            padding: 5,
             borderRadius: 5,
-            borderWidth: 1,
-            borderColor: '#FFFFFA39',
-            width: 100, height: 70,
+            width: 75, height: 70,
             alignItems: 'center', justifyContent: 'center'
         }}>
-            <Text style={{ fontWeight: 'bold', fontSize: 20, color: colors.text }}>{title}</Text>
+            <Text style={{ fontWeight: 'bold', fontSize: 18, color: colors.text }}>{title}</Text>
             <Text style={{ color: colors.text }}>{text}</Text>
         </View>
     )

@@ -9,6 +9,7 @@ const ContentPhoto = (props) => {
   const navigation = useNavigation();
   var [postId, setPostId] = useState(props.postData ? props.postData.id : null);
   var [source, setSource] = useState(props.src ? `${apiUrl}/gateway?url=${props.src}` : null);
+  var withResizeMode = props.withResizeMode ? props.withResizeMode : 'cover';
   var withSourceHeight = props.withSourceHeight ? props.withSourceHeight : 500;
   var withSourceBorderValue = props.withSourceBorderValue ? props.withSourceBorderValue : 0;
   var [withGoToPost, setWithGoToPost] = useState(props.withGoToPost ? props.withGoToPost : false);
@@ -41,10 +42,25 @@ const ContentPhoto = (props) => {
         goToPost();
       }}>
         <Image
-          style={{ height: withSourceHeight, zIndex: -1, borderRadius: withSourceBorderValue }}
+          style={ withResizeMode == 'contain' ?
+              {
+                minHeight: withSourceHeight, zIndex: -1, borderRadius: withSourceBorderValue
+              }
+              :
+              {
+                zIndex: -1,
+                borderRadius: withSourceBorderValue,
+                width: '100%',
+                height: withSourceHeight != 500 ? withSourceHeight : undefined,
+                maxHeight: withSourceHeight,
+                alignSelf: 'center',
+                aspectRatio: withSourceHeight != 500 ? undefined : 1,
+              }
+          }
           onLoadEnd={() => {
             if (props.setLoading) props.setLoading(false)
           }}
+          resizeMode={withResizeMode}
           source={{ uri: source }} />
       </TouchableOpacity>
     </View>

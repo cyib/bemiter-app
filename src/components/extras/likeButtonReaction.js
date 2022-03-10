@@ -64,7 +64,7 @@ export default class LikeButton extends Component {
   //         this.props.setScrollEnabled(false);
   //       }}
   //       delayLongPress={250} onLongPress={() => {
-  //         console.log('pressed');
+  //         ;
   //         this.setState({ likeReactionsShow: true });
   //       }}
   //       onPress={() => { this.props.setVotes(this.props.votes + 1) }}>

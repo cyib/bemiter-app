@@ -4,7 +4,7 @@ import { ActivityIndicator } from "react-native-paper";
 import globalVars from "../../helpers/globalVars";
 import IconButton from "../extras/iconButton";
 
-export function Empty({ colors, message, fontSize, iconSize, iconName, withLoader }) {
+export function Empty({ colors, message, fontSize, iconSize, iconName, withLoader, height }) {
     colors = colors ? colors : {
         border: colors ? colors.border : globalVars.selectedColors.secundary,
         primary: colors ? colors.secundary : globalVars.selectedColors.backgroundSecondColor,
@@ -17,7 +17,12 @@ export function Empty({ colors, message, fontSize, iconSize, iconName, withLoade
 
     return (
         <View>
-            <View style={{ alignItems: 'center', justifyContent: 'center', textAlignVertical: 'center', minHeight: 150 }}>
+            <View style={{
+                alignItems: 'center',
+                justifyContent: height ? 'flex-start' : 'center',
+                textAlignVertical: 'center',
+                minHeight: height ? height : 150
+            }}>
                 {
                     !withLoader ?
                         <Text>

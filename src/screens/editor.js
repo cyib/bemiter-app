@@ -1,12 +1,15 @@
 import React, { useState } from "react";
-import { View, Image, TouchableOpacity, Dimensions, Text, ScrollView } from "react-native";
+import { View, Image, TouchableOpacity, Dimensions, Text, ScrollView, Alert } from "react-native";
 import { Video } from 'expo-av';
 import globalVars from "../helpers/globalVars";
 import { Row, Col } from "react-native-paper-grid";
 import uploadFile from '../helpers/uploadFile';
 import { TextInput } from "react-native-paper";
+import { useNavigation } from "@react-navigation/native";
 
 const EditorScreen = (props) => {
+    const navigation = useNavigation();
+
     var [file, setFile] = useState(props.route.params.file);
     var [description, setDescription] = useState('');
     var [subtitle, setSubtitle] = useState('');
@@ -57,12 +60,20 @@ const EditorScreen = (props) => {
                 <Row>
                     <Col>
                         <TouchableOpacity onPress={() => {
-                            uploadFile(file, description, subtitle);
+                            ;
+                            uploadFile(file, description, subtitle).then((res) => {
+                                ;
+                                Alert.alert('Post criado com sucesso :)');
+                                navigation.navigate('HomeFeed', {
+                                    reload: true
+                                })
+                            });
+                            
                             setSendButtonDisabled(true);
                         }}
                             disabled={sendButtonDisabled}
                             style={{
-                                backgroundColor: sendButtonDisabled ? 'gray' : 'black',
+                                backgroundColor: sendButtonDisabled ? globalVars.selectedColors.backopaque : globalVars.selectedColors.primary,
                                 width: '100%',
                                 alignItems: 'center',
                                 padding: 15, borderRadius: 5

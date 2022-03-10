@@ -1,17 +1,19 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { View, Text, ScrollView, TouchableOpacity, Dimensions, Platform } from "react-native";
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
-import { useNavigation } from "@react-navigation/native";
+import { useIsFocused, useNavigation } from "@react-navigation/native";
 import { useBottomTabBarHeight } from "@react-navigation/bottom-tabs";
 import globalVars from "../helpers/globalVars";
 import HomeEmitFeed from "../components/emitFeed/home";
 import ActionButton from "../components/extras/actionButton";
 
-const EmitsScreen = () => {
+const EmitsScreen = (props) => {
 
     const navigation = useNavigation();
     var [scrollEnabled, setScrollEnabled] = useState(true);
     
+    const isFocused = useIsFocused();
+    useEffect(() => {}, [isFocused]);
 
     return (
         <View style={{ backgroundColor: globalVars.selectedColors.background }}>
@@ -32,9 +34,9 @@ const EmitsScreen = () => {
                 }}>alpha v1.0</Text>
                 <View style={{
                     width: 50, height: 50,
-                    position: 'absolute', right: 50,
+                    position: 'absolute', right: 55,
                     padding: 5, marginTop: 5
-                }} onTouchStart={() => { navigation.navigate('CreateFeed') }}>
+                }} onTouchStart={() => { navigation.navigate('HashManageFeed') }}>
                     <Text>
                         <MaterialCommunityIcons name="format-list-bulleted" color={globalVars.selectedColors.placeholder} size={40} />
                     </Text>
@@ -50,7 +52,8 @@ const EmitsScreen = () => {
                 </View>
             </View>
             <View style={{ height: 1, width: '100%', backgroundColor: globalVars.selectedColors.secundary }} />
-            <HomeEmitFeed/>
+            { isFocused ? <HomeEmitFeed/> 
+            : <View style={{ height: Dimensions.get('screen').height, width: '100%', backgroundColor: globalVars.selectedColors.background }} /> }
         </View>
     );
 

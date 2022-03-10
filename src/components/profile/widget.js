@@ -117,7 +117,7 @@ export default function WidgetModal(props) {
     });
 
     let responseJson = await res.json();
-    console.log('Widget:', res.status);
+    ;
     if (res.status == 200) {
 
     }

@@ -35,9 +35,9 @@ const LoginScreen = (props) => {
         });
 
         let responseJson = await res.json();
-        console.log(res.status);
+        ;
         if (res.status == 200) {
-            console.log(Platform.OS, responseJson.User.name);
+            ;
             await setData('token', responseJson.token);
             await setData('userInfo', responseJson.User);
             props.setIsLogged(true);

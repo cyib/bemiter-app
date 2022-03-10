@@ -29,7 +29,7 @@ export default function ComponentFeed() {
     async function loadApi(isRefresh) {
         setLoading(true);
         let page_ = page;
-        if(isRefresh === true){ 
+        if (isRefresh === true) {
             page_ = 1;
             setData([]);
         }
@@ -45,9 +45,9 @@ export default function ComponentFeed() {
 
         let responseJson = await response.json();
         if (response.status == 200) {
-            if(isRefresh === true){
+            if (isRefresh === true) {
                 setData([...responseJson.posts.docs]);
-            }else{
+            } else {
                 setData([...data, ...responseJson.posts.docs]);
             }
             setPage(page_ + 1);
@@ -78,7 +78,9 @@ export default function ComponentFeed() {
                 onScroll={handleScroll}
                 initialNumToRender={3}
                 data={data}
-                onEndReached={loadApi}
+                onEndReached={() => {
+                    if (data.length >= perPage - 1) loadApi()
+                }}
                 onEndReachedThreshold={0.3}
                 refreshing={refreshing}
                 onRefresh={handleRefresh}
@@ -94,7 +96,15 @@ export default function ComponentFeed() {
 
 function ListPost({ data, index }) {
     let content = JSON.parse(data.content);
-    return (<Post data={data} withMaxLinesToText={1} withGoToPostOnlyDescription={true}/>)
+    return (<Post
+        data={data}
+        withoutBorderMode={true}
+        withMaxLinesToText={1}
+        withSourceHeight={430}
+        withResizeMode={'cover'}
+        withoutPraiseButton
+        withGoToPostOnlyDescription={true}
+    />)
 }
 
 function FooterList({ load, refresh }) {
@@ -110,12 +120,12 @@ function FooterList({ load, refresh }) {
 }
 
 function HeaderComponent({ refresh }) {
-    if(refresh) return null;
+    if (refresh) return null;
     return null;
     return (
         <>
             <ScrollView horizontal={true} showsHorizontalScrollIndicator={false}>
-                <StoryMiniature src={`https://bafybeidjavehhnvtolrewsmj6l6qpnvfjzklibfoym6iipwbw4wzphw44u.ipfs.dweb.link/photo.jpg`}/>
+                <StoryMiniature src={`https://bafybeidjavehhnvtolrewsmj6l6qpnvfjzklibfoym6iipwbw4wzphw44u.ipfs.dweb.link/photo.jpg`} />
                 <StoryMiniature />
                 <StoryMiniature />
                 <StoryMiniature />

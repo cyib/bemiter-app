@@ -10,6 +10,7 @@ import SettingsScreen from "./screens/settings";
 import StackScreen from "./screens/stack";
 import ProfileScreen from "./screens/profile";
 import PostScreen from "./screens/post";
+import EmitsViewScreen from "./screens/emitsView";
 import CreateEmitScreen from './screens/createEmit';
 
 //icons
@@ -23,6 +24,7 @@ import SendFile from "./screens/sendfile";
 import EditorScreen from "./screens/editor";
 import ForumScreen from "./screens/forum";
 import EmitsScreen from "./screens/emits";
+import HashManageScreen from "./screens/hashManage";
 
 const FeedStackNavigator = createNativeStackNavigator();
 
@@ -94,6 +96,20 @@ function FeedStack() {
                     contentStyle: { backgroundColor: globalVars.selectedColors.background}
                 }}
             />
+            <FeedStackNavigator.Screen
+                name="EmitsView"
+                component={EmitsViewScreen}
+                options={{
+                    animation: "slide_from_right",
+                    title: 'Buscando emits',
+                    headerBackTitle: 'Voltar',
+                    headerShown: true,
+                    headerBackTitleVisible: true,
+                    headerTintColor: globalVars.selectedColors.text,
+                    headerStyle: { backgroundColor: globalVars.selectedColors.background },
+                    contentStyle: { backgroundColor: globalVars.selectedColors.background}
+                }}
+            />
         </FeedStackNavigator.Navigator>
     )
 }
@@ -115,6 +131,7 @@ function FeedEmitStack() {
                 name="CreateFeed"
                 component={CreateEmitScreen}
                 options={{
+                    animation: "slide_from_right",
                     title: 'Novo emit',
                     headerBackTitle: 'Feed',
                     headerShown: true,
@@ -125,10 +142,11 @@ function FeedEmitStack() {
                 }}
             />
             <FeedStackNavigator.Screen
-                name="EditorFeed"
-                component={EditorScreen}
+                name="HashManageFeed"
+                component={HashManageScreen}
                 options={{
-                    title: 'Editar',
+                    animation: "slide_from_right",
+                    title: 'Gerenciar Hashtags',
                     headerBackTitle: 'Voltar',
                     headerShown: true,
                     headerBackTitleVisible: true,
@@ -157,6 +175,20 @@ function FeedEmitStack() {
                 options={{
                     animation: "slide_from_right",
                     title: 'Emit',
+                    headerBackTitle: 'Voltar',
+                    headerShown: true,
+                    headerBackTitleVisible: true,
+                    headerTintColor: globalVars.selectedColors.text,
+                    headerStyle: { backgroundColor: globalVars.selectedColors.background },
+                    contentStyle: { backgroundColor: globalVars.selectedColors.background}
+                }}
+            />
+            <FeedStackNavigator.Screen
+                name="EmitsView"
+                component={EmitsViewScreen}
+                options={{
+                    animation: "slide_from_right",
+                    title: 'Buscando emits',
                     headerBackTitle: 'Voltar',
                     headerShown: true,
                     headerBackTitleVisible: true,
@@ -196,6 +228,20 @@ function ProfileStack() {
                     contentStyle: { backgroundColor: globalVars.selectedColors.background}
                 }}
             />
+            <FeedStackNavigator.Screen
+                name="EmitsView"
+                component={EmitsViewScreen}
+                options={{
+                    animation: "slide_from_right",
+                    title: 'Buscando emits',
+                    headerBackTitle: 'Voltar',
+                    headerShown: true,
+                    headerBackTitleVisible: true,
+                    headerTintColor: globalVars.selectedColors.text,
+                    headerStyle: { backgroundColor: globalVars.selectedColors.background },
+                    contentStyle: { backgroundColor: globalVars.selectedColors.background}
+                }}
+            />
         </FeedStackNavigator.Navigator>
     )
 }
@@ -222,7 +268,7 @@ function MyTabs() {
                     tabBarShowLabel: false,
                     tabBarInactiveTintColor: globalVars.currentTheme.colors.accent,
                     tabBarIcon: ({ color, size }) => (
-                        <MaterialCommunityIcons name="camera-party-mode" color={color} size={30} />
+                        <MaterialCommunityIcons name="home-circle" color={color} size={32} />
                     ),
                     headerShown: false,
                 }}
@@ -235,11 +281,11 @@ function MyTabs() {
                     tabBarInactiveTintColor: globalVars.currentTheme.colors.accent,
                     headerShown: false,
                     tabBarIcon: ({ color, size }) => (
-                        <MaterialCommunityIcons name="comment-quote" color={color} size={30} />
+                        <MaterialCommunityIcons name="comment-quote" color={color} size={32} />
                     ),
                 }}
             />
-            <Tab.Screen
+            {/* <Tab.Screen
                 name="SearchTab"
                 component={SettingsScreen}
                 options={{
@@ -247,10 +293,10 @@ function MyTabs() {
                     tabBarInactiveTintColor: globalVars.currentTheme.colors.accent,
                     headerShown: false,
                     tabBarIcon: ({ color, size }) => (
-                        <MaterialCommunityIcons name="compass" color={color} size={30} />
+                        <MaterialCommunityIcons name="compass" color={color} size={32} />
                     ),
                 }}
-            />
+            /> */}
             <Tab.Screen
                 name="ProfileTab"
                 component={ProfileStack}
@@ -260,7 +306,7 @@ function MyTabs() {
                     tabBarInactiveTintColor: globalVars.currentTheme.colors.accent,
                     headerShown: false,
                     tabBarIcon: ({ color, size }) => (
-                        <MaterialCommunityIcons name="account" color={color} size={30} />
+                        <MaterialCommunityIcons name="account" color={color} size={32} />
                     ),
                 }}
             />

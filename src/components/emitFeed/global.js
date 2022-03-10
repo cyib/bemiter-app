@@ -7,8 +7,9 @@ import globalVars from '../../helpers/globalVars';
 import { pauseAllVideos } from '../../helpers/utils';
 import Post from "../post/post";
 import StoryMiniature from "../../components/story/miniature";
+import PropTypes from 'prop-types';
 
-export default function ComponentEmitFeedGlobal() {
+export default function ComponentEmitFeedGlobal(props) {
     const perPage = 4;
 
     const [data, setData] = useState([]);
@@ -17,6 +18,9 @@ export default function ComponentEmitFeedGlobal() {
     const [page, setPage] = useState(1);
     const [lastUpdate, setLastUpdate] = useState(new Date());
     const [firstUpdate, setFirstUpdate] = useState(true);
+
+    const [urlRoute, setUrlRoute] = useState(props.urlRoute ? props.urlRoute : '/feed/emits');
+    const [extrasParams, setExtrasParams] = useState(props.extrasParams ? props.extrasParams : '');
 
     const [focusedIndex, setFocusedIndex] = useState(0);
 
@@ -45,22 +49,26 @@ export default function ComponentEmitFeedGlobal() {
             page_ = 1;
             setData([]);
         }
+
         let userToken = await getData('token');
-        let response = await fetch(`${apiUrl}/feed/emits?page=${page_}&limit=${perPage}`, {
-            method: 'GET',
+        let response = await fetch(`${apiUrl}${urlRoute}?page=${page_}&limit=${perPage}${extrasParams}`, {
+            method: 'POST',
             headers: {
                 "Accept": "application/json",
                 "Content-Type": "application/json",
                 "Authorization": `Bearer ${userToken}`
-            }
+            },
+            body: JSON.stringify({ 
+                emitsId: urlRoute == '/feed/emits' && !isRefresh ? data.map(post => post.id) : []
+            })
         });
 
         let responseJson = await response.json();
         if (response.status == 200) {
             if(isRefresh === true){
-                setData([...responseJson.posts.docs]);
+                setData([... responseJson.posts.docs ? responseJson.posts.docs : responseJson.posts]);
             }else{
-                setData([...data, ...responseJson.posts.docs]);
+                setData([...data, ...responseJson.posts.docs ? responseJson.posts.docs : responseJson.posts]);
             }
             setPage(page_ + 1);
             setLastUpdate(new Date());
@@ -83,16 +91,18 @@ export default function ComponentEmitFeedGlobal() {
     }
 
     return (
-        <View style={{ backgroundColor: globalVars.selectedColors.background }}>
+        <View style={{ backgroundColor: globalVars.selectedColors.background, minHeight: data.length < perPage ? Dimensions.get('screen').height -200 : undefined }}>
             <FlatList
                 style={{ backgroundColor: globalVars.selectedColors.background }}
                 showsVerticalScrollIndicator={false}
                 contentContainerStyle={{ paddingBottom: 110 }}
                 onScrollBeginDrag={() => pauseAllVideos()}
                 onScroll={handleScroll}
-                initialNumToRender={3}
+                initialNumToRender={perPage}
                 data={data}
-                onEndReached={loadApi}
+                onEndReached={() => {
+                    if(data.length >= perPage) loadApi()
+                }}
                 onEndReachedThreshold={0.1}
                 refreshing={refreshing}
                 onRefresh={handleRefresh}
@@ -111,6 +121,7 @@ function ListPost({ data, index }) {
         withMaxLinesToText={3}
         withLitleLike={true} 
         withLitleHash={true}
+        withShowReferencePost={true}
         litleLikeSize={25} litleLikeBottomMargin={28} profileImageSize={32}/>)
 }
 
@@ -138,3 +149,7 @@ const styles = StyleSheet.create({
         width: Dimensions.get('screen').width
     }
 });
+
+ComponentEmitFeedGlobal.propTypes = {
+    urlRoute: PropTypes.string
+}

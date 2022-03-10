@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { Dimensions, VirtualizedList, Image, Text, View, LogBox, FlatList, ListViewBase } from "react-native";
+import { Dimensions, VirtualizedList, Image, Text, View, LogBox, FlatList, ListViewBase, TouchableOpacity } from "react-native";
 import { Col, Row } from "react-native-paper-grid";
 import { getData } from "../../helpers/cache";
 import profileThemes from "../../helpers/profileThemes";
@@ -14,12 +14,17 @@ import { ActivityIndicator } from "react-native-paper";
 import { apiUrl } from "../../helpers/environment";
 import { groupArr } from "../../helpers/utils";
 import { Empty } from "../utils/Empty";
+import globalVars from "../../helpers/globalVars";
+import { useNavigation } from '@react-navigation/native';
 
 export default function ProfileBody(props) {
+    const navigation = useNavigation();
 
     var [userInfo, setUserInfo] = useState(props.userInfo ? props.userInfo : userInfoBase);
-    var [colors, setColors] = useState(profileThemes[props.userInfo.theme ? props.userInfo.theme : 'default']);
-
+    var themeMode = props.userInfo.theme ? (props.userInfo.theme != 'default' ? props.userInfo.theme : `default_${globalVars.theme.mode}`) : `default_${globalVars.theme.mode}` ;
+    var theme = profileThemes[themeMode];
+    var [colors, setColors] = useState(theme);
+    
     var [contents, setContents] = useState(null);
     var [reload, setReload] = useState(false);
 
@@ -41,9 +46,9 @@ export default function ProfileBody(props) {
     }, [reload]);
 
     async function getPosts() {
-        console.log(userInfo.id);
+        ;
         let userToken = await getData('token');
-        let response = await fetch(`${apiUrl}/user/posts/${userInfo.id}`, {
+        let response = await fetch(`${apiUrl}/user/posts/${userInfo.id}?limit=10`, {
             method: 'GET',
             headers: {
                 "Accept": "application/json",
@@ -57,7 +62,7 @@ export default function ProfileBody(props) {
             var docs = responseJson.posts.docs;
             var emits_ = docs.filter(e => e.type == 'text');
             var posts_ = docs.filter(e => e.type == 'photo' || e.type == 'video');
-            console.log(emits_.length, posts_.length);
+            ;
             setEmits(emits_);
             if((posts_.length/2).toString().indexOf('.') != -1) posts_.push({ id: uuid.v4() });
             setPosts(posts_);
@@ -71,18 +76,19 @@ export default function ProfileBody(props) {
 
     return (
         <>
-            <View style={{ width: Dimensions.get('screen').width }}>
+            <View style={{ width: Dimensions.get('screen').width + 2, margin: -10 }}>
                 <Row>
                     <Col>
                         <View style={{
-                            backgroundColor: colors.primary, borderRadius: 5,
-                            width: Dimensions.get('screen').width - 10,
+                            backgroundColor: colors.primary,
+                            width: Dimensions.get('screen').width + 10,
                             minHeight: 200
                         }}>
+                            <View style={{ height: 4, backgroundColor: colors.border }}/>
                             {
                                 !readyToShow ?
                                     <View style={{ paddingTop: 20 }}>
-                                        <Empty colors={colors} withLoader={true} message={'Carregando publicações ...'} />
+                                        <Empty colors={colors} withLoader={true} height={600} message={'Carregando publicações ...'} />
                                     </View>
                                     :
                                     <BodyContent />
@@ -91,6 +97,8 @@ export default function ProfileBody(props) {
                     </Col>
                 </Row>
             </View>
+            <View style={{ position: 'absolute', left: -20, top: -500, height: Dimensions.get('screen').height + 1000, width: Dimensions.get('screen').width + 200, 
+        backgroundColor: colors.primary, zIndex: -1}}/>
         </>
     );
 
@@ -103,10 +111,10 @@ export default function ProfileBody(props) {
                             <Empty colors={colors}/>
                         </View>
                         :
-                        <>
+                        <View style={{ paddingBottom: 150 }}>
                             <LastEmit />
                             <Galery />
-                        </>
+                            </View>
                 }
             </View>
         )
@@ -128,9 +136,12 @@ export default function ProfileBody(props) {
                         </View>
                     </Col>
                     <Col>
-                        <View style={{ flexDirection: 'row-reverse' }} onTouchEnd={() => {
-                            console.log('ir para emits')
-                        }}>
+                        <View style={{ flexDirection: 'row-reverse' }}>
+                            <TouchableOpacity onPress={() => {
+                                navigation.navigate('EmitsView', {
+                                    userInfo: userInfo
+                                  })
+                            }}>
                             <Text style={{
                                 marginTop: 7,
                                 marginLeft: 5,
@@ -139,11 +150,12 @@ export default function ProfileBody(props) {
                                 padding: 2,
                                 marginRight: 10,
                                 paddingHorizontal: 5,
-                                fontSize: 12,
+                                fontSize: 14,
                                 color: colors.text
                             }}>
                                 Mais emits
                             </Text>
+                            </TouchableOpacity>
                         </View>
                     </Col>
                 </Row>
@@ -158,19 +170,25 @@ export default function ProfileBody(props) {
         );
 
         function EmitContent({ }) {
+            var colors_ = colors;
+            colors_.secundary = colors_.secundary == 'transparent' ? '#00000008' : colors_.secundary;
             return (
                 <Row>
                     <Col>
+                    <View style={{ margin: 5, borderRadius: 5}}>
                         <Post
-                            colors={colors}
+                            colors={colors_}
                             data={emits[0]}
                             withMaxLinesToText={3}
                             withLitleLike={true}
                             withGoToPost={true}
+                            withoutBorderMode={true}
                             withoutHeader={true}
                             withoutFooter={true}
                             withLitleHash={true}
+                            withShowReferencePost={true}
                         />
+                        </View>
                     </Col>
                 </Row>
             )

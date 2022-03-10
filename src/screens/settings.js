@@ -10,36 +10,28 @@ const SettingsScreen = () => {
     const navigation = useNavigation();
 
     return (
-        <View>
-            <Text
-                style={{
-                    fontSize: 30,
-                    textAlign: "center",
-                    marginTop: "20%"
-                }}
-            >Mudar tema</Text>
-            <Button onPress={async () => {
+        <View style={{ height: '100%' }}>
+            <Button style={{ backgroundColor: 'white', marginBottom: 5 }} color={'black'} onPress={async () => {
                 globalVars.theme.mode = 'dark';
                 setData('userTheme', 'dark').then(() => {
                     NativeModules.DevSettings.reload();
                 });
-            }}>DARK</Button>
-            <Button onPress={async () => {
+            }}>Tema escuro</Button>
+            <Button style={{ backgroundColor: 'white', marginBottom: 5 }} color={'black'} onPress={async () => {
                 globalVars.theme.mode = 'default';
                 setData('userTheme', 'default').then(() => {
                     NativeModules.DevSettings.reload();
                 });
-            }}>DEFAULT</Button>
-            <Button onPress={async () => {
-                console.log('apagando cache ...');
+            }}>Tema claro</Button>
+            <Button style={{ backgroundColor: 'white', marginBottom: 5 }} color={'black'} onPress={async () => {
+                ;
                 await removeData('userTheme');
             }}>APAGAR CACHE</Button>
-            <Button onPress={async () => {
-                console.log('fazendo logout ...');
+            <Button style={{ backgroundColor: 'white', marginBottom: 5 }} color={'black'} onPress={async () => {
+                ;
                 await removeData('token');
                 NativeModules.DevSettings.reload();
-            }}>LOGOUT</Button>
-            {/* <Button onPress={() => navigation.navigate("Stack")}>CHANGE</Button> */}
+            }}>Sair da conta</Button>
         </View>
     );
 }

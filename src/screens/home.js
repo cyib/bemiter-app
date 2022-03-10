@@ -1,7 +1,7 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { View, Text, ScrollView, TouchableOpacity, Dimensions } from "react-native";
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
-import { useNavigation } from "@react-navigation/native";
+import { useIsFocused, useNavigation } from "@react-navigation/native";
 import Post from "../components/post/post";
 import TopLoading from "../components/extras/topLoading";
 import StoryMiniature from "../components/story/miniature";
@@ -11,6 +11,9 @@ import ComponentFeed from "../components/feed/home";
 import Modal from "../components/story/default";
 
 const HomeScreen = () => {
+    const isFocused = useIsFocused();
+    useEffect(() => {
+    }, [isFocused]);
 
     const navigation = useNavigation();
     var [scrollEnabled, setScrollEnabled] = useState(true);
@@ -43,7 +46,8 @@ const HomeScreen = () => {
                 </View>
             </View>
             <View style={{ height: 1, width: '100%', backgroundColor: globalVars.selectedColors.secundary }} />
-                <ComponentFeed/>
+            { isFocused ? <ComponentFeed/> 
+            : <View style={{ height: Dimensions.get('screen').height, width: '100%', backgroundColor: globalVars.selectedColors.background }} /> }
         </View>
     );
 }

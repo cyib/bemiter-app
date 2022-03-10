@@ -8,8 +8,14 @@ import uuid from 'react-native-uuid';
 import { TextInput, Chip, Switch } from "react-native-paper";
 import { getData } from "../helpers/cache";
 import { apiUrl } from "../helpers/environment";
+import { useNavigation, useRoute } from '@react-navigation/native';
 
 const CreateEmit = (props) => {
+    const route = useRoute();
+    ;
+    const navigation = useNavigation();
+
+    const [postReferenceId, setPostReferenceId] = useState(props.postReferenceId ? props.postReferenceId : null);
     const [emitInput, setEmitInput] = useState('');
     const [hashtagInput, setHashtagInput] = useState('');
 
@@ -44,14 +50,19 @@ const CreateEmit = (props) => {
 
     useEffect(() => {
         setSendButtonDisabled(false);
-    }, [emitInput, hashtagInput, selectedHashtags]);
+    }, [emitInput, hashtagInput, selectedHashtags, isSwitchHashtagsOn]);
 
     async function emit() {
+        if (!emitInput || emitInput == '') {
+            Alert.alert('Você não escreveu nada!');
+            return null;
+        }
         try {
             setSendButtonDisabled(true);
             const data = {
                 emitInput: emitInput,
-                hashtags: JSON.stringify(selectedHashtags)
+                hashtags: isSwitchHashtagsOn ? JSON.stringify(selectedHashtags) : JSON.stringify([]),
+                postReferenceId: postReferenceId
             };
             var token = await getData('token');
             let res = await fetch(`${apiUrl}/post/create/emit`, {
@@ -63,27 +74,32 @@ const CreateEmit = (props) => {
                 },
                 body: JSON.stringify(data),
             });
+
             let responseJson = await res.json();
-            console.warn('DONE');
-            if (responseJson.status == 200) {
-                Alert.alert('Emit realizado com sucesso!');
+            if (res.status == 200) {
+                ;
+                if(route.name == 'PostProfile'){ 
+                    navigation.goBack();
+                }else{
+                    navigation.navigate('PostProfile', {
+                        postId: postReferenceId
+                    });
+                }
             }
         } catch (error) {
-            console.log(error);
+            ;
         }
-        setSendButtonDisabled(false);
     }
 
     const onToggleSwitch = () => setIsSwitchHashtagsOn(!isSwitchHashtagsOn);
 
     return (
-        <View style={{ minHeight: maxHeight, backgroundColor: globalVars.selectedColors.background }}>
+        <View style={{ minHeight: maxHeight, backgroundColor: globalVars.selectedColors.backopaque }}>
             <ScrollView>
                 <Row>
                     <Col>
                         <TextInput placeholder="Fale sobre o que quiser aqui ..."
                             multiline={true}
-                            style={{ borderColor: globalVars.selectedColors.secundary, borderWidth: 1 }}
                             onChangeText={(text) => setEmitInput(text)} maxLength={emitInputMaxLen}>
                         </TextInput>
                         <View>
@@ -107,7 +123,6 @@ const CreateEmit = (props) => {
                                     <TextInput placeholder="(Opcional) Hashtag"
                                         value={hashtagInput}
                                         multiline={true}
-                                        style={{ borderColor: globalVars.selectedColors.secundary, borderWidth: 1 }}
                                         onChangeText={(text) => setHashtagInput(text)} maxLength={hashtagInputMaxLen}>
                                     </TextInput>
                                     <View>
@@ -120,7 +135,7 @@ const CreateEmit = (props) => {
                                     }}
                                         disabled={sendButtonDisabled}
                                         style={{
-                                            backgroundColor: sendButtonDisabled ? globalVars.selectedColors.backopaque : 'black',
+                                            backgroundColor: sendButtonDisabled ? globalVars.selectedColors.backopaque : globalVars.selectedColors.primary,
                                             width: '100%',
                                             alignItems: 'center',
                                             paddingBottom: 10, borderRadius: 5
@@ -158,30 +173,29 @@ const CreateEmit = (props) => {
                             </Row>
                             <Row>
                                 <Col>
-                                    <View style={{ height: 175, width: '100%' }} />
+                                    <View style={{ height: 0, width: '100%' }} />
                                 </Col>
                             </Row>
                         </>
                         : null
                 }
+                <Row>
+                    <Col>
+                        <TouchableOpacity onPress={emit}
+                            disabled={sendButtonDisabled}
+                            style={{
+                                backgroundColor: sendButtonDisabled ? globalVars.selectedColors.backopaque : globalVars.selectedColors.primary,
+                                width: '100%',
+                                alignItems: 'center',
+                                padding: 15, borderRadius: 5
+                            }}>
+                            <Text style={{ fontSize: 20 }}>{
+                                sendButtonDisabled ? 'PUBLICANDO ...' : 'PUBLICAR'
+                            }</Text>
+                        </TouchableOpacity>
+                    </Col>
+                </Row>
             </ScrollView>
-            <View style={{
-                position: 'absolute', width: Dimensions.get('screen').width - 10, marginHorizontal: 5,
-                bottom: Platform.OS == 'ios' ? 175 : 225
-            }}>
-                <TouchableOpacity onPress={emit}
-                    disabled={sendButtonDisabled}
-                    style={{
-                        backgroundColor: sendButtonDisabled ? globalVars.selectedColors.backopaque : 'black',
-                        width: '100%',
-                        alignItems: 'center',
-                        padding: 15, borderRadius: 5
-                    }}>
-                    <Text style={{ fontSize: 20 }}>{
-                        sendButtonDisabled ? 'PUBLICANDO ...' : 'PUBLICAR'
-                    }</Text>
-                </TouchableOpacity>
-            </View>
         </View>
     );
 }

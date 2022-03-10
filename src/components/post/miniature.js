@@ -12,14 +12,14 @@ const CardSimple = (props) => {
   return (
     <Card style={{
       backgroundColor: 'transparent',
-      margin: 10,
+      margin: 0,
     }}>
       {loading ? <ActivityIndicator
         size="small" color={globalVars.selectedColors.primary}
         style={{ zIndex: 10, position: 'absolute', left: '45%', top: '45%' }} /> : null}
       <Image style={{
-        height: 200, width: 200, borderRadius: 5,
-        borderWidth: 2,
+        height: 50, width: 50, borderRadius: 2,
+        borderWidth: 0,
         borderColor: globalVars.selectedColors.primary,
       }} source={{ uri: source }}
         onLoadEnd={() => setLoading(false)} />

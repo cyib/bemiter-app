@@ -1,3 +1,4 @@
+const { getData } = require("./cache");
 const globalVars = require("./globalVars");
 
 module.exports = {
@@ -13,10 +14,22 @@ module.exports = {
         {id: 8, name: 'pinkrose'},
     ],
     default: {
-        primary: '#6c6c6c',
-        secundary: '#494949',
-        border: '#494949',
-        text: '#F1FAEE'
+        primary: 'transparent',
+        secundary: 'transparent',
+        border: 'transparent',
+        text: 'transparent',
+    },
+    default_dark: {
+        primary: 'transparent',
+        secundary: '#48484830',
+        border: '#48484830',
+        text: '#eee',
+    },
+    default_default: {
+        primary: 'transparent',
+        secundary: 'transparent',
+        border: '#48484830',
+        text: '#484848',
     },
     darkgray: {
         primary: '#434A54',

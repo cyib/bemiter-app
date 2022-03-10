@@ -12,6 +12,8 @@ import { apiUrl } from "../helpers/environment";
 import { useNavigation } from '@react-navigation/native';
 import WidgetModal from "../components/profile/widget";
 import ProfileBody from "../components/profile/body";
+import ModalWithContent from "../components/extras/modalWithContent";
+import SettingsScreen from "./settings";
 
 const ProfileScreen = (props) => {
     const navigation = useNavigation();
@@ -32,7 +34,7 @@ const ProfileScreen = (props) => {
     var [readyToLoadBody, setReadyToLoadBody] = useState(false);
     var [failRefresh, setFailRefresh] = useState(false);
     useEffect(async () => {
-        
+
     }, [readyToLoadBody]);
 
     async function getUserProfile(id) {
@@ -46,7 +48,7 @@ const ProfileScreen = (props) => {
             }
         });
 
-        console.log(response.status);
+        ;
         if (response.status == 200) {
             let responseJson = await response.json();
             setUserInfo({ ...responseJson.User });
@@ -55,7 +57,7 @@ const ProfileScreen = (props) => {
                 await setData('userInfo', responseJson.User);
                 setUpdateNow(!updateNow);
             }
-            if(!readyToLoadBody) setReadyToLoadBody(true);
+            if (!readyToLoadBody) setReadyToLoadBody(true);
         } else if (response.status == 400) {
             Alert.alert(
                 "Perfil não encotrado!",
@@ -95,14 +97,14 @@ const ProfileScreen = (props) => {
             setIsInit(false);
             var localUser = await getData('userInfo');
             if (!profileId) {
-                console.log('Perfil próprio da tela profile ...');
+                ;
                 getOwnerProfile(true);
             } else {
                 if (localUser.id == profileId) {
-                    console.log('Perfil próprio do feed ...');
+                    ;
                     getOwnerProfile(true);
                 } else {
-                    console.log('Perfil de outro usuário ...');
+                    ;
                     getUserProfile(profileId);
                 }
 
@@ -120,36 +122,70 @@ const ProfileScreen = (props) => {
     }, [updateNow]);
 
     return (<>
-        {
-            !userInfo ?
-                <Loading />
-                :
+        <View style={{ backgroundColor: globalVars.selectedColors.background }}>
+            <View style={{
+                display: profileId ? 'none' : 'flex',
+                backgroundColor: globalVars.selectedColors.background,
+                height: 55, width: '100%',
+                flexDirection: 'row'
+            }}>
+                <Text style={{
+                    fontSize: 24,
+                    marginVertical: 10,
+                    marginLeft: 10, left: 0
+                }}>𝗕𝗘𝗠𝗜𝗧𝗘𝗥</Text>
+                <Text style={{
+                    fontSize: 10,
+                    marginVertical: 10,
+                    marginLeft: 5, left: 0,
+                }}>alpha v1.0</Text>
                 <View style={{
-                    backgroundColor: globalVars.currentTheme.colors.background,
-                    marginLeft: -10,
+                    width: 50, height: 50,
+                    position: 'absolute', right: 0,
+                    padding: 5, marginTop: 5
                 }}>
-                    <ScrollView style={{
-                        minHeight: '100%',
-                        backgroundColor: globalVars.currentTheme.colors.background
-                    }}>
-                        <Grid>
-                            <ProfileHeader
-                                userInfo={userInfo}
-                                updateNowParentScreen={updateNow}
-                                setUpdateNowParentScreen={setUpdateNow} />
-                            {
-                                readyToLoadBody ?
-                                    <ProfileBody
-                                        userInfo={userInfo}
-                                        updateNowParentScreen={updateNow}
-                                        myselfProfile={myselfProfile}
-                                        setUpdateNowParentScreen={setUpdateNow} />
-                                    : null
-                            }
-                        </Grid>
-                    </ScrollView>
+                    <ModalWithContent
+                    maxHeight={450}
+                        buttonEnabled={true}
+                        button={<Text>
+                            <MaterialCommunityIcons name="account-cog" color={globalVars.selectedColors.placeholder} size={32} />
+                        </Text>}>
+                            <SettingsScreen/>
+                    </ModalWithContent>
                 </View>
-        }
+            </View>
+            <View style={{ height: 1, width: '100%', backgroundColor: globalVars.selectedColors.secundary }} />
+            {
+                !userInfo ?
+                    <Loading />
+                    :
+                    <View style={{
+                        backgroundColor: globalVars.currentTheme.colors.background,
+                        marginLeft: -10,
+                    }}>
+                        <ScrollView style={{
+                            minHeight: '100%',
+                            backgroundColor: globalVars.currentTheme.colors.background
+                        }}>
+                            <Grid>
+                                <ProfileHeader
+                                    userInfo={userInfo}
+                                    updateNowParentScreen={updateNow}
+                                    setUpdateNowParentScreen={setUpdateNow} />
+                                {
+                                    readyToLoadBody ?
+                                        <ProfileBody
+                                            userInfo={userInfo}
+                                            updateNowParentScreen={updateNow}
+                                            myselfProfile={myselfProfile}
+                                            setUpdateNowParentScreen={setUpdateNow} />
+                                        : null
+                                }
+                            </Grid>
+                        </ScrollView>
+                    </View>
+            }
+        </View>
     </>
     );
 

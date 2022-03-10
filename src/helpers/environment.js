@@ -1,8 +1,8 @@
-const urlBase = `https://a301-2804-4be4-83f7-2801-20bf-a7de-cbd8-11d1.ngrok.io`;
-//const urlBase = `http://192.168.0.100:3000`;
+var urlBase = `https://bbaa-2804-4be4-8335-5c01-3431-322e-db59-6e98.ngrok.io`;
+//var urlBase = `http://192.168.0.100:3000`;
 
 module.exports = {
-    production: true,
+    production: true,   
     apiUrl: `${urlBase}/api`,
     url: `${urlBase}`   
 }

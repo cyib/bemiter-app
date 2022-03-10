@@ -60,7 +60,7 @@ function ModalContent({ isVisible, setVisibleModal, profileImage, userName }) {
         //   let startTouch = global.startTouch;
         //   let endTouch = global.endTouch;
         //   if (startTouch < endTouch) {
-        //     console.log('down');
+        //     ;
         //     setVisibleModal(false);
         //   }
         // }}

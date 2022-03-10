@@ -14,11 +14,11 @@ module.exports = {
         backgroundSecondColor: '#e5ebef',
     },
     darkTheme: {
-        textColor: 'whitesmoke',
+        textColor: '#F1FAEE',
         primaryColor: '#3381ca',
         secundaryColor: '#3c4043',
         backopaqueColor: '#ffffff0c',
-        backgroundSecondColor: '#2e2f31',
+        backgroundSecondColor: '#45454533',
     },
     selectedColors: {
         secundary: '',

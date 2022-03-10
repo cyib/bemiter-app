@@ -3,7 +3,7 @@ import { apiUrl } from "./environment";
 import { getData } from './cache';
 
 export default async function uploadFile(singleFile, description, subtitle) {
-    console.log('UPLOADING FILE ...');
+    ;
     var token = await getData('token');
     if (singleFile != null) {
         const data = new FormData();
@@ -25,14 +25,20 @@ export default async function uploadFile(singleFile, description, subtitle) {
             body: data,
         });
         let responseJson = await res.json();
-        console.warn('DONE');
-        if (responseJson.status == 200) {
-            console.log('Upload Successful');
-            return ('Upload Successful');
+        
+        if (res.status == 200) {
+            ;
+            return {
+                status: 200,
+                message: 'post created'
+            }
         }
     } else {
         console.warn('Please Select File first');
-        return ('Please Select File first');
+        return {
+            status: 404,
+            message: 'please Select File first'
+        };
     }
 }
 

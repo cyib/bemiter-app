@@ -41,17 +41,17 @@ export default function PaletteModal(props) {
 
     if (response.status == 200) {
       let responseJson = await response.json();
-      console.log(responseJson.message);
+      ;
     }
   }
 
   return (
     <View style={{ flex: 1, zIndex: 9999 }}>
       <TouchableOpacity onPress={toggleModal} onLongPress={() => {
-        console.log('clear');
+        ;
         removeData('userWidgets');
         }}>
-        <IconButton icon={'palette'} color={colors.text} size={40} />
+        <IconButton icon={'palette'} color={colors.text} size={32} />
       </TouchableOpacity>
 
       <Modal isVisible={isModalVisible}
@@ -59,12 +59,12 @@ export default function PaletteModal(props) {
         animationOut={'zoomOut'}
         onBackdropPress={toggleModal}>
         <View style={{
-          backgroundColor: colors.primary,
+          backgroundColor: colors.primary != 'transparent' ? colors.primary : 'gray',
           borderRadius: 5,
           height: 300
         }}>
           <View style={{ alignItems: 'center' }}>
-            <Text style={{ fontSize: 20, marginVertical: 10 }}>Temas</Text>
+            <Text style={{ fontSize: 20, marginVertical: 10, color: colors.text }}>Temas</Text>
           </View>
           <FlatList
             key={(item) => item.id}
@@ -85,12 +85,12 @@ export default function PaletteModal(props) {
     return (<>
       <TouchableOpacity
         onPress={() => {
-          console.log('Set theme:', name);
+          ;
           setModalVisible(false);
           changeTheme(name);
         }}
         style={{
-          backgroundColor: themes[name].secundary,
+          backgroundColor: themes[name].secundary != 'transparent' ? themes[name].secundary : 'darkgray',
           margin: 1,
           padding: 12,
           borderWidth: 1,
@@ -100,7 +100,7 @@ export default function PaletteModal(props) {
         }}>
         <Row>
           <Col size={8}>
-            <Text style={{ fontSize: 20 }}>{name}</Text>
+            <Text style={{ fontSize: 20, color: colors.text }}>{name}</Text>
           </Col>
           <Col size={1}>
             <View style={{

@@ -18,6 +18,9 @@ import DoubleTap from '../utils/DoubleTap';
 import ModalHash from './modalHash';
 import { useNavigation } from '@react-navigation/native';
 import uuid from 'react-native-uuid';
+import PropTypes from 'prop-types';
+import ModalWithContent from '../extras/modalWithContent';
+import CreateEmit from '../../screens/createEmit';
 
 const PostCard = (props) => {
   const navigation = useNavigation();
@@ -28,13 +31,14 @@ const PostCard = (props) => {
   if (!contentData) return <></>;
 
   const colors = props.colors ? props.colors : null;
-  const postColors = {
+  var postColors = {
     border: colors ? colors.border : globalVars.selectedColors.secundary,
     primary: colors ? colors.secundary : globalVars.selectedColors.backgroundSecondColor,
     secundary: colors ? colors.secundary : globalVars.selectedColors.secundary,
     image: colors ? colors.primary : globalVars.currentTheme.colors.primary,
+    tags: colors ? colors.primary : globalVars.selectedColors.backopaque,
     button: colors ? colors.text : globalVars.selectedColors.primary,
-    text: colors ? colors.text : globalVars.selectedColors.placeholder
+    text: colors ? colors.text : globalVars.selectedColors.text
   }
 
   //POST INFO
@@ -56,6 +60,7 @@ const PostCard = (props) => {
   var [withoutSave, setWithoutSave] = useState(props.withoutSave ? props.withoutSave : false);
   var [withoutDescription, setWithoutDescription] = useState(props.withoutDescription ? props.withoutDescription : false);
   var [withSourceHeight, setWithSourceHeight] = useState(props.withSourceHeight ? props.withSourceHeight : null);
+  var [withResizeMode, setWithResizeMode] = useState(props.withResizeMode ? props.withResizeMode : null);
   var [withSourceBorderValue, setWithSourceBorderValue] = useState(props.withSourceBorderValue ? props.withSourceBorderValue : null);
   var [withMaxLinesToText, setWithMaxLinesToText] = useState(props.withMaxLinesToText ? props.withMaxLinesToText : 10);
   var [postMaxHeight, setPostMaxHeight] = useState(props.postMaxHeight ? props.postMaxHeight : 1000);
@@ -63,8 +68,8 @@ const PostCard = (props) => {
   var [withoutPlay, setWithoutPlay] = useState(props.withoutPlay ? props.withoutPlay : false);
   var [withGoToPost, setWithGoToPost] = useState(props.withGoToPost ? props.withGoToPost : false);
   var [withGoToPostOnlyDescription, setWithGoToPostOnlyDescription] = useState(props.withGoToPostOnlyDescription ? props.withGoToPostOnlyDescription : false);
-  var [withoutShowVotes, setWithLitleLike] = useState(props.withoutShowVotes ? props.withoutShowVotes : false);
-  var [withoutShowComments, setWithLitleLike] = useState(props.withoutShowComments ? props.withoutShowComments : false);
+  var [withoutShowVotes, setWithoutShowVotes] = useState(props.withoutShowVotes ? props.withoutShowVotes : false);
+  var [withoutShowComments, setWithoutShowComments] = useState(props.withoutShowComments ? props.withoutShowComments : false);
   var [withLitleLike, setWithLitleLike] = useState(props.withLitleLike ? props.withLitleLike : false);
   var [withLitleHash, setWithLitleHash] = useState(props.withLitleHash ? props.withLitleHash : false);
   var [litleLikeSize, setLitleLikeSize] = useState(props.litleLikeSize ? props.litleLikeSize : 20);
@@ -73,6 +78,7 @@ const PostCard = (props) => {
   var [withoutPraiseButton, setWithoutPraiseButton] = useState(props.withoutPraiseButton ? props.withoutPraiseButton : false);
   var [profileImageSize, setProfileImageSize] = useState(props.profileImageSize ? props.profileImageSize : 48);
   var [withoutBorderMode, setWithoutBorderMode] = useState(props.withoutBorderMode ? props.withoutBorderMode : false);
+  var [withShowReferencePost, setWithShowReferencePost] = useState(props.withShowReferencePost ? props.withShowReferencePost : false);
 
   var [type, setType] = useState(data.type ? data.type : 'photo');
 
@@ -97,10 +103,19 @@ const PostCard = (props) => {
   var [catalogDescription, setCatalogDescription] = useState((data.type == 'catalog' && contentData.description) ? contentData.description : null);
 
   //USER INFOS
-  var [userId, setUserId] = useState(data['User.id'] ? data['User.id'] : null);
-  var [name, setName] = useState(data['User.name'] ? data['User.name'] : `Username`);
+  var [userId, setUserId] = useState(data['User.id'] || data.User.id ? data['User.id'] || data.User.id: null);
+  var [name, setName] = useState(data['User.name'] || data.User.name ? data['User.name'] || data.User.name : `Username`);
   var [subtitle, setSubtitle] = useState(contentData.subtitle ? contentData.subtitle : ` `);
-  var [profileImage, setProfileImage] = useState(data['User.avatar'] ? data['User.avatar'] : globalVars.placeholders.images.profile)
+  var [profileImage, setProfileImage] = useState(
+    data['User.avatar'] ? data['User.avatar'] : ( 
+    data.User && data.User.avatar !== undefined && data.User.avatar !== null ? data.User.avatar : 
+    globalVars.placeholders.images.profile)
+  );
+
+  if((type == 'photo' || type == 'video') && withLitleLike) {
+    postColors.text = 'white';
+    postColors.button = 'white';
+  }
 
   var [isInit, setIsInit] = useState(true);
   useEffect(() => {
@@ -139,6 +154,12 @@ const PostCard = (props) => {
     })
   }
 
+  function gotoHashtag(hashtagName) {
+    navigation.navigate('EmitsView', {
+      hashtagName
+    })
+  }
+  
   return (
     <View>
       <Card style={{
@@ -150,6 +171,8 @@ const PostCard = (props) => {
         maxHeight: postMaxHeight,
         marginHorizontal: !withoutBorderMode ? 7 : null,
         marginVertical: !withoutBorderMode ? 5 : null,
+        marginBottom: withoutBorderMode ? 12 : null,
+        paddingBottom: withoutBorderMode ? 10 : null,
         backgroundColor: postColors.primary,
       }}>
         {(!withoutHeader) ? <>
@@ -193,7 +216,7 @@ const PostCard = (props) => {
           size="small" color={globalVars.selectedColors.primary}
           style={{ zIndex: 10, position: 'absolute', left: '46%', top: '47%' }} /> : null}
 
-        <View style={{ marginTop: (type == 'text' && !withoutHeader && withoutPraiseButton) ? -20 : 0 }}>
+        <View style={{ marginTop: (type == 'text' && !withoutHeader && withoutPraiseButton && profileImageSize < 48) ? -20 : 0 }}>
           {type == 'photo' ? <ContentPhoto
             src={source}
             setLoading={setLoading}
@@ -202,6 +225,7 @@ const PostCard = (props) => {
             doubleTap={like}
             withGoToPost={withGoToPost}
             withSourceHeight={withSourceHeight}
+            withResizeMode={withResizeMode}
             withSourceBorderValue={withSourceBorderValue} /> : null}
           {type == 'text' ? <ContentText
             colors={colors}
@@ -210,6 +234,7 @@ const PostCard = (props) => {
             liked={liked}
             doubleTap={like}
             withGoToPost={withGoToPost}
+            withShowReferencePost={withShowReferencePost}
             withMaxLinesToText={withMaxLinesToText} /> : null}
           {type == 'video' ? <ContentVideo src={source} setLoading={setLoading}
             postData={data}
@@ -219,6 +244,7 @@ const PostCard = (props) => {
             withGoToPost={withGoToPost}
             withoutVolume={withoutVolume}
             withSourceHeight={withSourceHeight}
+            withResizeMode={withResizeMode}
             buttonColor={withGoToPost ? postColors.primary : null}
             iconColor={withGoToPost ? postColors.text : null}
             withSourceBorderValue={withSourceBorderValue} /> : null}
@@ -254,7 +280,7 @@ const PostCard = (props) => {
                           <Row>
                             {!withoutSend ?
                               <Col style={{ alignItems: 'center' }}>
-                                <View style={{ zIndex: 100, marginBottom: -10 }}>
+                                <View style={{ zIndex: 100, marginBottom: -5 }}>
                                   <ActionButton
                                     color={postColors.button}
                                     size={28}
@@ -268,10 +294,24 @@ const PostCard = (props) => {
                               <Col style={{ alignItems: 'center' }}>
                                 <View style={{ zIndex: 100, marginBottom: -10, alignItems: 'center', justifyContent: 'center' }}>
                                   {!withoutShowComments ? <Text style={{ position: 'absolute', bottom: -12, fontSize: 10 }}>{comments}</Text> : null}
-                                  <ActionButton
-                                    color={postColors.button}
-                                    iconInit={'comment-text-outline'}
-                                    size={28} />
+                                  <ModalWithContent
+                                    buttonEnabled
+                                    button={<ActionButton
+                                      withoutTouch
+                                      color={postColors.button}
+                                      iconInit={'comment-text-outline'}
+                                      size={28} />}
+                                  >
+                                    <View style={{ borderRadius: 5, alignItems: 'center' }}>
+                                      <View style={{ marginVertical: 10, flexDirection: 'row' }}>
+                                        <Text>Comentando publicação de </Text>
+                                        <Text style={{ fontWeight: 'bold'}}>{name}</Text>
+                                      </View>
+                                    </View>
+                                    <View style={{ borderRadius: 5 }}>
+                                      <CreateEmit postReferenceId={data.id}/>
+                                    </View>
+                                  </ModalWithContent>
                                 </View>
                               </Col>
                               : null}
@@ -321,7 +361,7 @@ const PostCard = (props) => {
           </Card.Actions>}
         {
           createdAt ?
-            <View style={{ position: 'absolute', left: 5, bottom: 5 }}>
+            <View style={{ position: 'absolute', left: 10, bottom: withLitleHash || withLitleLike ? 5 : -5 }}>
               <Text style={{ fontSize: 11, color: postColors.text }}>{getTimeOfPost()} atrás</Text>
             </View>
             : null
@@ -329,15 +369,19 @@ const PostCard = (props) => {
         {
           withLitleHash && (hashtags && hashtags.length > 0) ?
             <>
-              <View style={{ position: 'absolute', left: 0, bottom: 22, maxWidth: 280, borderRadius: 5, padding: 2 }}>
+              <View style={{ position: 'absolute', flexDirection: 'row', left: 0, bottom: 22, maxWidth: 280, borderRadius: 5, padding: 2 }}>
                 <FlatList data={hashtags} horizontal={true}
                   keyExtractor={(item) => uuid.v5(item, 'key')}
                   showsHorizontalScrollIndicator={false} renderItem={({ item }) => {
-                    return <View style={{ flexWrap: 'wrap', marginHorizontal: 4 }}>
-                      <Chip icon="pound" closeIcon={"heart"} style={{ borderRadius: 5 }}
+                    return <TouchableOpacity style={{ flexWrap: 'wrap', marginHorizontal: 4 }} onPress={() => gotoHashtag(item)}>
+                      <Chip selectedColor={postColors.text} icon="pound" style={{ borderRadius: 5, backgroundColor: postColors.tags }}
                         key={() => uuid.v5(item, 'key')}
-                      >{item.toLowerCase()}</Chip>
-                    </View>
+                      >
+                        <Text style={{ color: postColors.text }}>
+                          {item.toLowerCase()}
+                        </Text>
+                      </Chip>
+                    </TouchableOpacity>
                   }} />
               </View><View style={{ height: 10 }} /></>
             : null
@@ -345,7 +389,7 @@ const PostCard = (props) => {
         {
           withLitleLike ?
             <View style={{ position: 'absolute', right: 10, bottom: type == 'text' ? 15 : 0, flexDirection: 'row', alignItems: 'center' }}>
-              {!withoutShowVotes ? <Text style={{ maxWidth: 30, minWidth: 5, marginRight: 5 }}>{votes}</Text> : null}
+              {!withoutShowVotes ? <Text style={{ maxWidth: 30, minWidth: 5, marginRight: 5, color: postColors.text }}>{votes}</Text> : null}
               <ActionButton
                 color={postColors.button}
                 colorFilled={'#f12020'}
@@ -373,3 +417,31 @@ const PostCard = (props) => {
 }
 
 export default PostCard;
+
+PostCard.propTypes = {
+  withoutHeader: PropTypes.bool,
+  withoutFooter: PropTypes.bool,
+  withoutSend: PropTypes.bool,
+  withoutLike: PropTypes.bool,
+  withoutComment: PropTypes.bool,
+  withoutSave: PropTypes.bool,
+  withoutDescription: PropTypes.bool,
+  withSourceHeight: PropTypes.number,
+  withResizeMode: PropTypes.string,
+  withSourceBorderValue: PropTypes.number,
+  withMaxLinesToText: PropTypes.number,
+  postMaxHeight: PropTypes.number,
+  withoutVolume: PropTypes.bool,
+  withoutPlay: PropTypes.bool,
+  withGoToPost: PropTypes.bool,
+  withGoToPostOnlyDescription: PropTypes.bool,
+  withoutShowVotes: PropTypes.bool,
+  withoutShowComments: PropTypes.bool,
+  withLitleLike: PropTypes.bool,
+  withLitleHash: PropTypes.bool,
+  litleLikeSize: PropTypes.number,
+  withoutPraiseButton: PropTypes.bool,
+  profileImageSize: PropTypes.number,
+  withoutBorderMode: PropTypes.bool,
+  withShowReferencePost: PropTypes.bool
+}

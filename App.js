@@ -75,6 +75,12 @@ export default function App() {
   var [isLogged, setIsLogged] = useState(false);
   var [loadingCache, setLoadingCache] = useState(true);
 
+  var [globalRefresh, setGlobalRefresh] = useState(false);
+
+  global.globalRefresh = () => {
+    setGlobalRefresh(!globalRefresh);
+  };
+
   useEffect(() => {
     getLoginFromLocalStorage();
     getData('userTheme').then(data => {
@@ -93,7 +99,7 @@ export default function App() {
       globalVars.theme.mode = 'default';
       setTheme(themeConfig());
     });
-  }, []);
+  }, [globalRefresh]);
 
   var getLoginFromLocalStorage = () => {
     getData('token').then(data => {

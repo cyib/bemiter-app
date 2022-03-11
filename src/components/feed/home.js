@@ -1,14 +1,16 @@
 import React, { useEffect, useState, useCallback } from 'react';
-import { StyleSheet, Text, View, FlatList, NativeSyntheticEvent, NativeScrollEvent, Dimensions, ScrollView, Alert } from 'react-native';
+import { StyleSheet, Text, View, FlatList, NativeSyntheticEvent, NativeScrollEvent, Dimensions, ScrollView, Alert, Platform, NativeModules } from 'react-native';
 import { ActivityIndicator } from 'react-native-paper';
-import { getData } from '../../helpers/cache';
+import { getData, removeData } from '../../helpers/cache';
 import { apiUrl } from '../../helpers/environment';
 import globalVars from '../../helpers/globalVars';
-import { pauseAllVideos } from '../../helpers/utils';
+import { logout, pauseAllVideos } from '../../helpers/utils';
 import Post from "../post/post";
 import StoryMiniature from "../../components/story/miniature";
+import { useNavigation } from "@react-navigation/native";
 
 export default function ComponentFeed() {
+    const navigation = useNavigation();
     const perPage = 3;
 
     const [data, setData] = useState([]);
@@ -43,18 +45,26 @@ export default function ComponentFeed() {
             }
         });
 
-        let responseJson = await response.json();
-        if (response.status == 200) {
-            if (isRefresh === true) {
-                setData([...responseJson.posts.docs]);
-            } else {
-                setData([...data, ...responseJson.posts.docs]);
+        try {
+            let responseJson = await response.json();
+            if (response.status == 200) {
+                if (isRefresh === true) {
+                    setData([...responseJson.posts.docs]);
+                } else {
+                    setData([...data, ...responseJson.posts.docs]);
+                }
+                setPage(page_ + 1);
+                setRefreshing(false);
+                setTimeout(() => {
+                    setLoading(false);
+                }, 1000);
+            } else if (response.status == 401) {
+                logout();
             }
-            setPage(page_ + 1);
-            setRefreshing(false);
-            setTimeout(() => {
-                setLoading(false);
-            }, 1000);
+        } catch (error) {
+            if (response.status == 401) {
+                logout();
+            }
         }
     }
 

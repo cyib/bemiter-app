@@ -107,7 +107,7 @@ export default function ProfileBody(props) {
             <View>
                 {
                     (!emits || emits.length == 0) && (!posts || posts.length == 0) ?
-                        <View style={{ paddingTop: 20 }}>
+                        <View style={{ paddingTop: 20, paddingBottom: 500 }}>
                             <Empty colors={colors}/>
                         </View>
                         :

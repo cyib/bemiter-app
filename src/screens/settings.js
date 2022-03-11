@@ -4,6 +4,7 @@ import { useNavigation } from "@react-navigation/native";
 import { Button } from "react-native-paper";
 import globalVars from '../helpers/globalVars';
 import { removeData, setData } from '../helpers/cache';
+import { logout } from "../helpers/utils";
 
 const SettingsScreen = () => {
 
@@ -14,23 +15,29 @@ const SettingsScreen = () => {
             <Button style={{ backgroundColor: 'white', marginBottom: 5 }} color={'black'} onPress={async () => {
                 globalVars.theme.mode = 'dark';
                 setData('userTheme', 'dark').then(() => {
-                    NativeModules.DevSettings.reload();
+                    global.globalRefresh();
+                    setTimeout(() => {
+                        navigation.goBack();
+                    }, 200);
                 });
             }}>Tema escuro</Button>
             <Button style={{ backgroundColor: 'white', marginBottom: 5 }} color={'black'} onPress={async () => {
                 globalVars.theme.mode = 'default';
                 setData('userTheme', 'default').then(() => {
-                    NativeModules.DevSettings.reload();
+                    global.globalRefresh();
+                    setTimeout(() => {
+                        navigation.goBack();
+                    }, 200);
+                   
                 });
             }}>Tema claro</Button>
             <Button style={{ backgroundColor: 'white', marginBottom: 5 }} color={'black'} onPress={async () => {
-                ;
                 await removeData('userTheme');
-            }}>APAGAR CACHE</Button>
-            <Button style={{ backgroundColor: 'white', marginBottom: 5 }} color={'black'} onPress={async () => {
-                ;
                 await removeData('token');
-                NativeModules.DevSettings.reload();
+                global.globalRefresh();
+            }}>APAGAR TODO CACHE</Button>
+            <Button style={{ backgroundColor: 'white', marginBottom: 5 }} color={'black'} onPress={async () => {
+                logout();
             }}>Sair da conta</Button>
         </View>
     );

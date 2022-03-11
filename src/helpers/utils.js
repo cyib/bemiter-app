@@ -1,4 +1,10 @@
 import { Platform } from "react-native";
+import { removeData } from "./cache";
+
+export async function logout() {
+    await removeData('token');
+    global.globalRefresh();
+}
 
 export function pauseAllVideos() {
     if (global.videosRefs) {

@@ -8,7 +8,7 @@
     "splash": {
       "image": "./assets/splash.png",
       "resizeMode": "contain",
-      "backgroundColor": "#ffffff"
+      "backgroundColor": "#369ae1"
     },
     "updates": {
       "fallbackToCacheTimeout": 0
@@ -16,10 +16,13 @@
     "assetBundlePatterns": [
       "**/*"
     ],
+    "platforms": ["android","ios"],
     "ios": {
-      "supportsTablet": true
+      "supportsTablet": true,
+      "bundleIdentifier": "com.bemiter.app"
     },
     "android": {
+      "package": "com.bemiter.app",
       "adaptiveIcon": {
         "foregroundImage": "./assets/adaptive-icon.png",
         "backgroundColor": "#FFFFFF"
@@ -30,5 +33,5 @@
     },
     "sdkVersion": "44.0.0"
   },
-  "name": "react-navigation-tutorial"
+  "name": "bemiter"
 }

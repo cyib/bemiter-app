@@ -14,7 +14,7 @@ import { apiUrl } from "../helpers/environment";
 import globalVars from "../helpers/globalVars";
 import { setData, getData } from '../../src/helpers/cache';
 
-const image = { uri: "https://i.pinimg.com/originals/05/7b/2b/057b2be2e40c928f071a47a50769cdf6.jpg" };
+const image = { uri: null };
 
 const LoginScreen = (props) => {
 
@@ -54,7 +54,7 @@ const LoginScreen = (props) => {
         <KeyboardAvoidingView
             behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
             style={styles.container}>
-            <ImageBackground source={image} resizeMode="cover" style={styles.image}>
+            <ImageBackground source={require('../assets/background.jpg')} resizeMode="cover" style={styles.image}>
                 <View style={styles.card}>
                     <View style={{ width: 200, marginTop: 20 }}>
                         <Text style={{

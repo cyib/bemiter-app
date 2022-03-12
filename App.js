@@ -5,7 +5,7 @@ import globalVars from './src/helpers/globalVars';
 import { getData } from './src/helpers/cache';
 import { setCustomText } from 'react-native-global-props';
 import MainStatusBar from './src/components/extras/statusBar';
-import LoginScreen from './src/screens/login';
+import HomeInitScreen from './src/screens/homeInit';
 
 function themeConfig() {
   var theme_ = {
@@ -117,7 +117,7 @@ export default function App() {
             {
               !isLogged ?
                 <>
-                  <LoginScreen setIsLogged={setIsLogged} />
+                  <HomeInitScreen setIsLogged={setIsLogged} />
                 </>
                 :
                 <>

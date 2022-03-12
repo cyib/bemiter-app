@@ -12,7 +12,7 @@ import { useNavigation, useRoute } from '@react-navigation/native';
 
 const CreateEmit = (props) => {
     const route = useRoute();
-    ;
+    
     const navigation = useNavigation();
 
     const [postReferenceId, setPostReferenceId] = useState(props.postReferenceId ? props.postReferenceId : null);

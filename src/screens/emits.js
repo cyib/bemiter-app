@@ -6,6 +6,7 @@ import { useBottomTabBarHeight } from "@react-navigation/bottom-tabs";
 import globalVars from "../helpers/globalVars";
 import HomeEmitFeed from "../components/emitFeed/home";
 import ActionButton from "../components/extras/actionButton";
+import { versionLabel } from "../helpers/environment";
 
 const EmitsScreen = (props) => {
 
@@ -31,7 +32,7 @@ const EmitsScreen = (props) => {
                     fontSize: 10,
                     marginVertical: 10,
                     marginLeft: 5, left: 0,
-                }}>alpha v1.0</Text>
+                }}>{versionLabel} { __DEV__ ? '(DEV)' : null}</Text>
                 <View style={{
                     width: 50, height: 50,
                     position: 'absolute', right: 55,

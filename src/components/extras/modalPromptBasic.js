@@ -1,11 +1,10 @@
-import { useIsFocused } from "@react-navigation/native";
 import React, { useEffect, useState } from "react";
-import { Button, Dimensions, FlatList, Text, TouchableOpacity, View } from "react-native";
+import { Button, Dimensions, FlatList, Platform, Text, TouchableOpacity, View } from "react-native";
 import Modal from "react-native-modal";
 import { Col, Row } from "react-native-paper-grid";
 import globalVars from "../../helpers/globalVars";
 
-function ModalWithContent({
+function ModalPromptBasic({
   button,
   buttonEnabled,
   buttonAction,
@@ -13,16 +12,11 @@ function ModalWithContent({
   animationIn,
   animationOut,
   maxHeight,
+  backgroundColor,
   children
 }) {
 
-  const isFocused = useIsFocused();
-    useEffect(() => {
-    }, [isFocused]);
-
   const [isModalVisible, setModalVisible] = useState(false);
-
-  global.lastModalVisibility = setModalVisible;
 
   const toggleModal = () => {
     setModalVisible(!isModalVisible);
@@ -41,30 +35,26 @@ function ModalWithContent({
       </TouchableOpacity>
 
       <Modal isVisible={isModalVisible}
+      backdropOpacity={1}
         onSwipeComplete={toggleModal}
         onBackdropPress={toggleModal}
         swipeDirection={swipeDirection ? swipeDirection : 'down'}
-        animationIn={animationIn ? animationIn : 'slideInUp'}
-        animationOut={animationOut ? animationOut : 'slideOutDown'}>
+        animationIn={animationIn ? animationIn : 'fadeIn'}
+        animationOut={animationOut ? animationOut : 'bounceOut'}>
         <View style={{
           flex: 1,
-          bottom: -175,
-          borderRadius: 5,
-          backgroundColor: globalVars.selectedColors.secundary,
+          top: Platform.OS == 'ios' ? -150 : 0,
+          borderRadius: 3,
+          backgroundColor: backgroundColor ? backgroundColor : globalVars.selectedColors.secundary,
           maxHeight: maxHeight ? maxHeight : '100%', maxWidth: '100%',
-          paddingHorizontal: 5
+          paddingHorizontal: 5,
+          justifyContent: 'center'
         }}>
-          <View style={{ height: 10, alignItems: 'center', marginVertical: 10 }}>
-            <View style={{ 
-              height: 5, width: 125, 
-              backgroundColor: globalVars.selectedColors.disabled, 
-              borderRadius: 100 }}/>
-          </View>
-          {isFocused ? children : null}
+          {children}
         </View>
       </Modal>
     </View>
   );
 }
 
-export default ModalWithContent;
+export default ModalPromptBasic;

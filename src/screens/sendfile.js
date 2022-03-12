@@ -6,7 +6,7 @@ import globalVars from '../helpers/globalVars';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import { useNavigation } from '@react-navigation/native';
 
-export default function SendFile() {
+export default function SendFile({ profilePhoto }) {
     const [file, setFile] = useState(null);
     const [type, setType] = useState(null);
 
@@ -15,7 +15,7 @@ export default function SendFile() {
     const pickFile = async () => {
         // No permissions request is necessary for launching the image library
         let result = await ImagePicker.launchImageLibraryAsync({
-            mediaTypes: ImagePicker.MediaTypeOptions.All,
+            mediaTypes: profilePhoto ? ImagePicker.MediaTypeOptions.Images : ImagePicker.MediaTypeOptions.All,
             videoMaxDuration: 600,
             allowsEditing: true,
             aspect: [1, 1],
@@ -24,8 +24,10 @@ export default function SendFile() {
 
         if (!result.cancelled) {
             setFile(result);
+            if(profilePhoto) global.lastModalVisibility(false);
             navigation.navigate('EditorFeed', {
-                file: result
+                file: result,
+                profilePhoto: profilePhoto ? profilePhoto : false
             })
         }
     };
@@ -41,7 +43,12 @@ export default function SendFile() {
                 padding: 20
             }}>
                 <MaterialCommunityIcons name={'cloud-upload'} color={'white'} size={72} />
-                <Text style={{fontSize: 16, color: 'white' }}>Escolher foto ou vídeo</Text>
+                <Text style={{fontSize: 16, color: 'white' }}>{
+                    profilePhoto ? 
+                    'Escolher foto de perfil'
+                    :
+                    'Escolher foto ou vídeo'
+                }</Text>
             </TouchableOpacity>
         
         </View>

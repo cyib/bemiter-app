@@ -8,7 +8,7 @@ import ProfileHeader from '../components/profile/header';
 import Miniature from '../components/post/miniature';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import { getData, setData } from "../helpers/cache";
-import { apiUrl } from "../helpers/environment";
+import { apiUrl, versionLabel } from "../helpers/environment";
 import { useNavigation } from '@react-navigation/native';
 import WidgetModal from "../components/profile/widget";
 import ProfileBody from "../components/profile/body";
@@ -138,7 +138,7 @@ const ProfileScreen = (props) => {
                     fontSize: 10,
                     marginVertical: 10,
                     marginLeft: 5, left: 0,
-                }}>alpha v1.0</Text>
+                }}>{versionLabel} { __DEV__ ? '(DEV)' : null}</Text>
                 <View style={{
                     width: 50, height: 50,
                     position: 'absolute', right: 0,

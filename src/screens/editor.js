@@ -10,6 +10,8 @@ import { useNavigation } from "@react-navigation/native";
 const EditorScreen = (props) => {
     const navigation = useNavigation();
 
+    var profilePhoto = props.route.params.profilePhoto ? props.route.params.profilePhoto : false;
+
     var [file, setFile] = useState(props.route.params.file);
     var [description, setDescription] = useState('');
     var [subtitle, setSubtitle] = useState('');
@@ -20,28 +22,34 @@ const EditorScreen = (props) => {
 
     return (
         <View style={{ minHeight: maxHeight, backgroundColor: globalVars.selectedColors.background }}>
-            <ScrollView style={{}}>
-                <Row>
-                    <Col>
-                        <TextInput placeholder="Escreva sua legenda aqui ..."
-                            onChangeText={(text) => setDescription(text)} maxLength={50}>
+            <ScrollView>
+                {
+                    !profilePhoto ?
+                        <>
+                            <Row>
+                                <Col>
+                                    <TextInput placeholder="Escreva sua legenda aqui ..."
+                                        onChangeText={(text) => setDescription(text)} maxLength={50}>
 
-                        </TextInput>
-                        <View>
-                            <Text>{description.length}/50</Text>
-                        </View>
-                    </Col>
-                </Row>
-                <Row>
-                    <Col>
-                        <TextInput placeholder="Local da publicação ... "
-                            onChangeText={(text) => setSubtitle(text)} maxLength={50}>
-                        </TextInput>
-                        <View>
-                            <Text>{subtitle.length}/50</Text>
-                        </View>
-                    </Col>
-                </Row>
+                                    </TextInput>
+                                    <View>
+                                        <Text>{description.length}/50</Text>
+                                    </View>
+                                </Col>
+                            </Row>
+                            <Row>
+                                <Col>
+                                    <TextInput placeholder="Local da publicação ... "
+                                        onChangeText={(text) => setSubtitle(text)} maxLength={50}>
+                                    </TextInput>
+                                    <View>
+                                        <Text>{subtitle.length}/50</Text>
+                                    </View>
+                                </Col>
+                            </Row>
+                        </>
+                        : null
+                }
                 <Row>
                     <Col>
                         <View style={{ width: '100%', justifyContent: 'center' }}>
@@ -60,15 +68,21 @@ const EditorScreen = (props) => {
                 <Row>
                     <Col>
                         <TouchableOpacity onPress={() => {
-                            ;
-                            uploadFile(file, description, subtitle).then((res) => {
-                                ;
-                                Alert.alert('Post criado com sucesso :)');
-                                navigation.navigate('HomeFeed', {
-                                    reload: true
-                                })
+                            uploadFile(file, description, subtitle, profilePhoto).then((res) => {
+                                if(!profilePhoto){
+                                    Alert.alert('Post criado com sucesso :)');
+                                    navigation.navigate('HomeFeed', {
+                                        reload: true
+                                    })
+                                }
+                                if(profilePhoto){
+                                    Alert.alert('Foto de perfil atualizada!', 'Perfil atualizado com sucesso :)');
+                                    navigation.navigate('ProfileProfile', {
+                                        reload: true
+                                    })
+                                }
                             });
-                            
+
                             setSendButtonDisabled(true);
                         }}
                             disabled={sendButtonDisabled}
@@ -76,7 +90,7 @@ const EditorScreen = (props) => {
                                 backgroundColor: sendButtonDisabled ? globalVars.selectedColors.backopaque : globalVars.selectedColors.primary,
                                 width: '100%',
                                 alignItems: 'center',
-                                padding: 15, borderRadius: 5
+                                padding: 15, borderRadius: 5, marginBottom: 30
                             }}>
                             <Text style={{ fontSize: 20 }}>{
                                 sendButtonDisabled ? 'PUBLICANDO ...' : 'PUBLICAR'

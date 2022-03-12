@@ -5,6 +5,9 @@ module.exports = {
         primaryColor: '#3498db',
         secundaryColor: '#95c5e5',
         accentColor: 'gray',
+        extraColors:{
+            modalBackgroundPrompt: '#1a1a1afc'
+        }
     },
     defaultTheme: {
         textColor: '#1a1a1a',

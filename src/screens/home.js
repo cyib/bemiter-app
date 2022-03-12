@@ -9,6 +9,7 @@ import globalVars from "../helpers/globalVars";
 import { pauseAllVideos } from "../helpers/utils";
 import ComponentFeed from "../components/feed/home";
 import Modal from "../components/story/default";
+import { versionLabel } from "../helpers/environment";
 
 const HomeScreen = () => {
     const isFocused = useIsFocused();
@@ -34,7 +35,7 @@ const HomeScreen = () => {
                     fontSize: 10,
                     marginVertical: 10,
                     marginLeft: 5, left: 0,
-                }}>alpha v1.0</Text>
+                }}>{versionLabel} { __DEV__ ? '(DEV)' : null}</Text>
                 <View style={{
                     width: 50, height: 50,
                     position: 'absolute', right: 0,

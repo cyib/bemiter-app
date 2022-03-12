@@ -12,6 +12,8 @@ import profileThemes from "../../helpers/profileThemes";
 import IconButton from "../extras/iconButton";
 import PaletteModal from "./palette";
 import { apiUrl } from "../../helpers/environment";
+import ModalWithContent from "../extras/modalWithContent";
+import SendFile from "../../screens/sendfile";
 
 const profileHeader = (props) => {
     var avatarBase = `https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRl8UcJiZxXc_q-Zr-1dohkW5sd8lTxvpPj-g&usqp=CAU`;
@@ -99,13 +101,19 @@ const profileHeader = (props) => {
                 <Row>
                     <Col size={2}>
                         <View style={{ alignItems: 'center' }}>
-                            <Image
+                            <ModalWithContent 
+                            buttonEnabled={myselfProfile}
+                            button={
+                                <Image
                                 style={{
                                     borderRadius: 5,
                                     borderWidth: 1,
                                     borderColor: colors.border
                                 }}
                                 source={{ uri: userInfo.avatar ? userInfo.avatar : avatarBase, height: 100, width: 100 }} />
+                            }>
+                                <SendFile profilePhoto={true}/>
+                            </ModalWithContent>
                         </View>
                     </Col>
                     <Col size={4}>

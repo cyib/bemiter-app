@@ -242,6 +242,19 @@ function ProfileStack() {
                     contentStyle: { backgroundColor: globalVars.selectedColors.background}
                 }}
             />
+            <FeedStackNavigator.Screen
+                name="EditorFeed"
+                component={EditorScreen}
+                options={{
+                    title: 'Editar',
+                    headerBackTitle: 'Voltar',
+                    headerShown: true,
+                    headerBackTitleVisible: true,
+                    headerTintColor: globalVars.selectedColors.text,
+                    headerStyle: { backgroundColor: globalVars.selectedColors.background },
+                    contentStyle: { backgroundColor: globalVars.selectedColors.background}
+                }}
+            />
         </FeedStackNavigator.Navigator>
     )
 }

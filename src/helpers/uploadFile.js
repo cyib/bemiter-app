@@ -2,8 +2,7 @@ import { Platform } from "react-native";
 import { apiUrl } from "./environment";
 import { getData } from './cache';
 
-export default async function uploadFile(singleFile, description, subtitle) {
-    ;
+export default async function uploadFile(singleFile, description, subtitle, profilePhoto) {
     var token = await getData('token');
     if (singleFile != null) {
         const data = new FormData();
@@ -15,7 +14,7 @@ export default async function uploadFile(singleFile, description, subtitle) {
         data.append('description', description);
         data.append('subtitle', subtitle);
         // Please change file upload URL
-        let res = await fetch(`${apiUrl}/user/newpost`, {
+        let res = await fetch(`${apiUrl}/user/newpost${profilePhoto ? '?profile=true' : ''}`, {
             method: 'POST',
             headers: {
                 'Accept': 'application/json',
@@ -27,7 +26,6 @@ export default async function uploadFile(singleFile, description, subtitle) {
         let responseJson = await res.json();
         
         if (res.status == 200) {
-            ;
             return {
                 status: 200,
                 message: 'post created'

@@ -84,7 +84,6 @@ function W_BANNER(colors, edit = false, contents = null) {
 
 function W_LAST_EMIT(colors, edit = false, contents = null) {
     var data = postTemplates.text;
-    ;
     var content = JSON.parse(data.content);
     return (
         <>
